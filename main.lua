@@ -14,9 +14,16 @@
 --are people a resource, too? or just abstracted to food?
 
 --other ideas:
---  different structure "recipes" have to be discovered. just uncover the terrain & click to acquire?
+--  different structure "blueprints" have to be discovered. just uncover the terrain & click to acquire or something
 --  scrying for rare/unique items: send out 5 evently spaced lines; something good is on one of those lines; can use multiples to triangulate to distant points (but not perfectly)
 --  large temples for uniting distant areas, i.e. regular temples' leylines have a length limit, but better ones can link farther
+
+--TODO, generally
+--change the way resources are gathered. might not be as simple as precalculating rates, since the land features' multipliers can change (i guess??)
+--make type-in-table pattern more consistent. it's ok to reference one table from another! probably!
+--similarly, make color patterns more consistent. i forgot that setColor() can take a table {1,2,3,4}, which sure seems more efficient than {r=1, g=2, b=3, a=4}
+--art.
+--sound? yeah.
 
 function love.load()
 	--basics & graphics
@@ -134,26 +141,8 @@ function love.update(dt)
 	end
 	
 	counter = counter % 1
-
-  --lengthen lines & apply their power
-	local linesChanging = false
 	
-	for k, l in pairs(lines) do
-		if l.ratio < l.targetRatio then
-			l.ratio = l.ratio + dt
-			lines[k] = changeLineLength(lines[k], l.ratio)
-			linesChanging = true
-		end
-	end
-	
-	--update some stuff if leylines were added
-	if structureCalculationsNeeded and not linesChanging then 
-		calculateLeylinePower()
-		applyLeylinePower()
-		calculateResourceRates()
-		
-		structureCalculationsNeeded = false
-	end
+	updateLinesAndRecalculate(dt)
 	
 	--update tooltip
 	hoveredButtonType = mouseOnButton(mouseX, mouseY)
@@ -263,8 +252,8 @@ function drawStructuresAndLeylines()
 	
 	--lines
 	love.graphics.setLineWidth(1)
-	love.graphics.setColor(255, 255, 255, 127)
 	for i = 1, #lines do
+		love.graphics.setColor(lines[i].color)
 		love.graphics.line(lines[i].x1, lines[i].y1, lines[i].x2, lines[i].y2)
 	end
 end
@@ -430,12 +419,12 @@ function addNewLeylines()
 	local noob = structures[#structures]
 	for i = 1, #structures - 1 do
 		if structures[i].type == "Temple" then
-			table.insert(lines, extendedLine(noob, structures[i]))
+			table.insert(lines, extendedLine(noob, structures[i], {255, 255, 255, 255}))
 		end
 	end
 end
 
-function extendedLine(p1, p2, r)
+function extendedLine(p1, p2, color, r)
 	local ratio = r or 0.5
 	
 	local xDiff = p1.x - p2.x
@@ -451,8 +440,9 @@ function extendedLine(p1, p2, r)
 		p1 = p1,
 		p2 = p2,
 		lineLevel = 0,
-		slope = yDiff / xDiff,
-		perpendicular = -xDiff / yDiff
+		-- slope = yDiff / xDiff,
+		-- perpendicular = -xDiff / yDiff,
+		color = color or {math.random(255), math.random(255), math.random(255), 127},
 	}
 end
 
@@ -475,7 +465,7 @@ function calculateLeylinePower()
 	end
 end
 
---thanks, https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line. would not have figureed this out on my own.
+--thanks, https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line. would not have figured this out on my own.
 function distanceToLine(p, l)
 	local xDiff = l.x2 - l.x1
 	local yDiff = l.y2 - l.y1
@@ -530,7 +520,7 @@ function calculateResourceRates()
 end
 
 function changeLineLength(line, ratio)
-	return extendedLine(line.p1, line.p2, line.ratio)
+	return extendedLine(line.p1, line.p2, line.color, line.ratio)
 end
 
 function distanceBetween(p1, p2)
@@ -538,4 +528,26 @@ function distanceBetween(p1, p2)
 	local yDiff = p1.y - p2.y
 	
 	return (xDiff ^ 2 + yDiff ^ 2) ^ 0.5
+end
+
+function updateLinesAndRecalculate(dt)
+	--lengthen lines & apply their power
+	local linesChanging = false
+
+	for k, l in pairs(lines) do
+		if l.ratio < l.targetRatio then
+			l.ratio = l.ratio + dt
+			lines[k] = changeLineLength(lines[k], l.ratio)
+			linesChanging = true
+		end
+	end
+
+	--update some stuff if leylines were added
+	if structureCalculationsNeeded and not linesChanging then 
+		calculateLeylinePower()
+		applyLeylinePower()
+		calculateResourceRates()
+	
+		structureCalculationsNeeded = false
+	end
 end
