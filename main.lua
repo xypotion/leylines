@@ -132,22 +132,78 @@ function love.update(dt)
 	if hoveredButtonType then updateToolTip(hoveredButtonType) end
 end
 
+function love.mousepressed(x, y)
+	-- local mode = mouseOnButton(x, y)
+	if hoveredButtonType then
+		buildMode = hoveredButtonType
+	else
+		if structureInfo[buildMode] then
+			tryToBuildA(buildMode, x, y)
+		end
+	end
+	-- print("distance from temple = "..distanceBetween(structures[1], {x = x, y = y}))
+	
+end
+
+function love.keypressed(key)
+	if DEBUG then
+		if key == "escape" then
+			love.event.quit()
+		elseif key == "w" then
+			resources.Wood = resources.Wood * 2
+		elseif key == "s" then
+			resources.Stone = resources.Stone * 2
+		elseif key == "x" then
+			-- print("\nSTART")
+			calculateLeylinePower()
+		end
+	end
+end
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--separating because of stencil complications
+
 function love.draw()
+	--canvas setup
 	love.graphics.setCanvas(canvas)
 	love.graphics.clear()
 	
+	--grey fog of war
 	love.graphics.setColor(63, 63, 63)	
 	love.graphics.rectangle("fill", 0, 0, canvasWidth, canvasHeight)
 	
-	love.graphics.setColor(255, 255, 255, 255)
+	--draw visible areas as stencil
+	love.graphics.stencil(drawTerrainVision, "increment")
+
+	love.graphics.setStencilTest("greater", 0)
+
+	love.graphics.setColor(63, 191, 63)	
+	love.graphics.rectangle("fill", 0, 0, canvasWidth, canvasHeight)
 	
-	-- for k, l in pairs(lines) do
-	-- 	love.graphics.line(l.x, l.y, mouseX, mouseY)
-	-- end
+	--mouse-linked line
+	-- love.graphics.line(points[#points].x, points[#points].y, mouseX, mouseY)
+	-- love.graphics.line(newLine.x1, newLine.y1, newLine.x2, newLine.y2)
+	
+	love.graphics.setStencilTest()
+	
+	drawStructuresAndLeylines()
+	
+	drawUI()
+	
+	--canvas drawing
+	love.graphics.setColor(255, 255, 255)
+	love.graphics.setCanvas()
+	love.graphics.draw(canvas)
+	
+	love.graphics.setStencilTest()
+end
+
+function drawTerrainVision()
+	love.graphics.setColor(255, 255, 255, 255)
 	
 	--structures' visions
 	for k, s in pairs(structures) do
-		love.graphics.setColor(127, 191, 127, 255)
+		-- love.graphics.setColor(127, 191, 127, 255)
 		love.graphics.ellipse("fill", s.x, s.y, s.vision, s.vision * TWO_THIRDS)
 	end
 	
@@ -157,7 +213,9 @@ function love.draw()
 	for i = 1, #lines do
 		love.graphics.line(lines[i].x1, lines[i].y1, lines[i].x2, lines[i].y2)
 	end
-	
+end
+
+function drawStructuresAndLeylines()
 	--structures
 	for k, s in pairs(structures) do
 		love.graphics.setColor(structureInfo[s.type].r, structureInfo[s.type].g + s.numLines * 32, structureInfo[s.type].b, 255)
@@ -170,11 +228,9 @@ function love.draw()
 	for i = 1, #lines do
 		love.graphics.line(lines[i].x1, lines[i].y1, lines[i].x2, lines[i].y2)
 	end
-	
-	--mouse-linked line
-	-- love.graphics.line(points[#points].x, points[#points].y, mouseX, mouseY)
-	-- love.graphics.line(newLine.x1, newLine.y1, newLine.x2, newLine.y2)
-	
+end
+
+function drawUI()
 	--buttons
 	for k, b in pairs(buttons) do
 		love.graphics.setColor(255, 255, 255)
@@ -206,39 +262,6 @@ function love.draw()
 	--error message
 	love.graphics.setColor(255, 191, 191)
 	love.graphics.printf(errorMsg, 0, 10, canvasWidth, "center")
-	
-	--canvas junk
-	love.graphics.setColor(255, 255, 255)
-	love.graphics.setCanvas()
-	love.graphics.draw(canvas)
-end
-
-function love.mousepressed(x, y)
-	-- local mode = mouseOnButton(x, y)
-	if hoveredButtonType then
-		buildMode = hoveredButtonType
-	else
-		if structureInfo[buildMode] then
-			tryToBuildA(buildMode, x, y)
-		end
-	end
-	-- print("distance from temple = "..distanceBetween(structures[1], {x = x, y = y}))
-	
-end
-
-function love.keypressed(key)
-	if DEBUG then
-		if key == "escape" then
-			love.event.quit()
-		elseif key == "w" then
-			resources.Wood = resources.Wood * 2
-		elseif key == "s" then
-			resources.Stone = resources.Stone * 2
-		elseif key == "x" then
-			-- print("\nSTART")
-			calculateLeylinePower()
-		end
-	end
 end
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -304,11 +327,11 @@ function clickingGreen(x, y)
 	
 	c.r, c.g, c.b = iData:getPixel(x, y)
 	
-	if c.r == 127 and c.g == 191 and c.b == 127 then
-		return true
-	else
-		errorMsg = errorMsg.."can only build on green areas.\n"
+	if c.r == 63 and c.g == 63 and c.b == 63 then
+		errorMsg = errorMsg.."cannot build in non-visible areas.\n"
 		return false
+	else
+		return true
 	end
 end
 
