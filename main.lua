@@ -13,16 +13,22 @@
 --green -> wood, red -> stone, blue -> food (water and fish)?
 --are people a resource, too? or just abstracted to food?
 
+--scrying for rare/unique items: send out 5 evently spaced lines; something good is on one of those lines; can use multiples to triangulate to distant points (but not perfectly)
+
 function love.load()
 	--basics & graphics
 	DEBUG = true
 	TWO_THIRDS = 2 / 3
+	
+	math.randomseed(os.time())
 	
 	canvasWidth, canvasHeight = 720, 720
 	love.window.setMode(canvasWidth, canvasHeight)
 		
 	canvas = love.graphics.newCanvas(canvasWidth, canvasHeight)
 	canvas:setFilter('nearest', 'nearest', 0)
+	
+	-- painting = love.graphics.newImage("painting3.jpg")
 	
 	--constants
 	minDistance = 20
@@ -34,9 +40,11 @@ function love.load()
 			r = 255, g = 255, b = 255, size = 6, vision = minDistance * 3, cost = {Stone = 50}, production = {Stone = 1, Wood = 1}, costIncrease = 2, tip = "Pairs produce Leylines."
 			},
 		Tower = {r = 191, g = 127, b = 255, size = 5, vision = minDistance * 6, cost = {Stone = 5}, production = {}, costIncrease = 1.6},
-		Quarry = {r = 63, g = 63, b = 95, size = 5, vision = minDistance * 2, cost = {Wood = 10, Stone = 10}, production = {Stone = 4}, costIncrease = 1.6},
-		Mill = {r = 63, g = 127, b = 63, size = 5, vision = minDistance * 2, cost = {Wood = 10, Stone = 10}, production = {Wood = 4}, costIncrease = 1.6},
+		Quarry = {r = 63, g = 63, b = 127, size = 5, vision = minDistance * 2, cost = {Wood = 10, Stone = 10}, production = {Stone = 4}, costIncrease = 1.6},
+		Mill = {r = 127, g = 191, b = 63, size = 5, vision = minDistance * 2, cost = {Wood = 10, Stone = 10}, production = {Wood = 4}, costIncrease = 1.6},
 	}
+	
+	-- landInfo = {}
 	
 	--UI
 	--TODO generate dynamically...
@@ -79,10 +87,23 @@ function love.load()
 	-- end
 	-- buildA("Temple", canvasWidth / 3, canvasHeight / 3)
 	
-	-- landCells = {}
-	-- for i = 1, 100 do
-	-- 	landCells[i] = {}
-	-- end
+	--generate a bunch of forests and lakes
+	landFeatures = {}
+	for i = 1, 100 do
+		landFeatures[i] = {
+			x = math.random(canvasWidth), 
+			y = math.random(canvasWidth),
+			numLines = 0
+		}
+		
+		if i <= 40 then
+			landFeatures[i].type = "Forest"
+		elseif i <= 80 then
+			landFeatures[i].type = "Mountain"
+		elseif i <= 100 then
+			landFeatures[i].type = "Crystal"
+		end
+	end
 end
 
 function love.update(dt)
@@ -177,8 +198,9 @@ function love.draw()
 
 	love.graphics.setStencilTest("greater", 0)
 
-	love.graphics.setColor(63, 191, 63)	
-	love.graphics.rectangle("fill", 0, 0, canvasWidth, canvasHeight)
+	--draw land & terrain features
+	drawTerrain()
+	-- love.graphics.draw(painting)
 	
 	--mouse-linked line
 	-- love.graphics.line(points[#points].x, points[#points].y, mouseX, mouseY)
@@ -212,6 +234,16 @@ function drawTerrainVision()
 	love.graphics.setLineStyle("smooth")
 	for i = 1, #lines do
 		love.graphics.line(lines[i].x1, lines[i].y1, lines[i].x2, lines[i].y2)
+	end
+end
+
+function drawTerrain()
+	love.graphics.setColor(63, 127, 63)
+	love.graphics.rectangle("fill", 0, 0, canvasWidth, canvasHeight)
+	
+	love.graphics.setColor(31, 31, 255, 255)
+	for k, thing in pairs(landFeatures) do
+		love.graphics.circle("fill", thing.x, thing.y, 4, 4)
 	end
 end
 
