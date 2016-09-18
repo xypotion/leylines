@@ -13,7 +13,10 @@
 --green -> wood, red -> stone, blue -> food (water and fish)?
 --are people a resource, too? or just abstracted to food?
 
---scrying for rare/unique items: send out 5 evently spaced lines; something good is on one of those lines; can use multiples to triangulate to distant points (but not perfectly)
+--other ideas:
+--  different structure "recipes" have to be discovered. just uncover the terrain & click to acquire?
+--  scrying for rare/unique items: send out 5 evently spaced lines; something good is on one of those lines; can use multiples to triangulate to distant points (but not perfectly)
+--  large temples for uniting distant areas, i.e. regular temples' leylines have a length limit, but better ones can link farther
 
 function love.load()
 	--basics & graphics
@@ -44,7 +47,11 @@ function love.load()
 		Mill = {r = 127, g = 191, b = 63, size = 5, vision = minDistance * 2, cost = {Wood = 10, Stone = 10}, production = {Wood = 4}, costIncrease = 1.6},
 	}
 	
-	-- landInfo = {}
+	landInfo = {
+		Forest = {r = 127, g = 223, b = 127, productionMultipliers = {Wood = 2}, distanceStep = minDistance},
+		Mountain = {r = 255, g = 127, b = 63, productionMultipliers = {Stone = 2}, distanceStep = minDistance},
+		Crystal = {r = 255, g = 255, b = 63, productionMultipliers = {Wood = 2, Stone = 2}, distanceStep = minDistance},
+	}
 	
 	--UI
 	--TODO generate dynamically...
@@ -89,19 +96,19 @@ function love.load()
 	
 	--generate a bunch of forests and lakes
 	landFeatures = {}
-	for i = 1, 100 do
+	for i = 1, 50 do
 		landFeatures[i] = {
 			x = math.random(canvasWidth), 
 			y = math.random(canvasWidth),
 			numLines = 0
 		}
 		
-		if i <= 40 then
-			landFeatures[i].type = "Forest"
-		elseif i <= 80 then
-			landFeatures[i].type = "Mountain"
+		if i <= 20 then
+			landFeatures[i].type = landInfo.Forest
+		elseif i <= 40 then
+			landFeatures[i].type = landInfo.Mountain
 		elseif i <= 100 then
-			landFeatures[i].type = "Crystal"
+			landFeatures[i].type = landInfo.Crystal
 		end
 	end
 end
@@ -241,8 +248,8 @@ function drawTerrain()
 	love.graphics.setColor(63, 127, 63)
 	love.graphics.rectangle("fill", 0, 0, canvasWidth, canvasHeight)
 	
-	love.graphics.setColor(31, 31, 255, 255)
 	for k, thing in pairs(landFeatures) do
+	love.graphics.setColor(thing.type.r, thing.type.g, thing.type.b, 255)
 		love.graphics.circle("fill", thing.x, thing.y, 4, 4)
 	end
 end
