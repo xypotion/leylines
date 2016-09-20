@@ -19,16 +19,19 @@
 --  large temples for uniting distant areas, i.e. regular temples' leylines have a length limit, but better ones can link farther
 
 --TODO, generally
+--[ability to] preview lines & structures before placing
 --change the way resources are gathered. might not be as simple as precalculating rates, since the land features' multipliers can change (i guess??)
---make type-in-table pattern more consistent. it's ok to reference one table from another! probably!
---similarly, make color patterns more consistent. i forgot that setColor() can take a table {1,2,3,4}, which sure seems more efficient than {r=1, g=2, b=3, a=4}
+--make type-in-table implementation pattern more consistent. it's ok to reference one table from another! probably!
+--similarly, make color implementation patterns more consistent. i forgot that setColor() can take a table {1,2,3,4}, which sure seems more efficient than {r=1, g=2, b=3, a=4}
 --art.
---sound? yeah.
+--sound?
 
 function love.load()
 	--basics & graphics
 	DEBUG = true
 	TWO_THIRDS = 2 / 3
+	
+	love.math.noise()
 	
 	math.randomseed(os.time())
 	
