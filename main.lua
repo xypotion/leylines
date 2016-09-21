@@ -19,12 +19,16 @@
 --  large temples for uniting distant areas, i.e. regular temples' leylines have a length limit, but better ones can link farther
 
 --TODO, generally
+--back to proper terrain generation, not a bunch of random points of interest in an infinite green field
+--enlarged + griddy map, then map scrolling??
 --[ability to] preview lines & structures before placing
+--other on-hover effects, like for buttons, but also lines & structures
 --change the way resources are gathered. might not be as simple as precalculating rates, since the land features' multipliers can change (i guess??)
 --make type-in-table implementation pattern more consistent. it's ok to reference one table from another! probably!
 --similarly, make color implementation patterns more consistent. i forgot that setColor() can take a table {1,2,3,4}, which sure seems more efficient than {r=1, g=2, b=3, a=4}
 --art.
 --sound?
+--actual good UI, not wonky, debuggy stuff. maybe a sidebar with buttons?
 
 function love.load()
 	--basics & graphics
@@ -83,7 +87,6 @@ function love.load()
 	resources = {
 		Wood = 0,
 		Stone = 50,
-		-- Divinity = 0
 	}
 	
 	resourceRates = {
@@ -130,12 +133,14 @@ function love.update(dt)
 	
 	counter = counter + dt --TODO rename this. it's only used for resource production
 	
-	--enhance structures' visions AND produce resources
+	--for each structure...
 	for k, s in pairs(structures) do
+		--enhance vision ring if applicable
 		if s.vision < s.targetVision then
 			s.vision = s.vision + dt * structureInfo[s.type].vision * 2
 		end
 		
+		--produce resources if it's time to
 		if counter >= 1 then
 			for r, amount in pairs(structureInfo[s.type].production) do
 				resources[r] = resources[r] + amount * (1 + s.numLines)
@@ -145,6 +150,7 @@ function love.update(dt)
 	
 	counter = counter % 1
 	
+	--stretch lines, recalculate line-related stuff if it's time to do so
 	updateLinesAndRecalculate(dt)
 	
 	--update tooltip
@@ -153,8 +159,8 @@ function love.update(dt)
 end
 
 function love.mousepressed(x, y)
-	-- local mode = mouseOnButton(x, y)
 	if hoveredButtonType then
+		--set build mode
 		buildMode = hoveredButtonType
 	else
 		if structureInfo[buildMode] then
@@ -197,14 +203,14 @@ function love.draw()
 
 	love.graphics.setStencilTest("greater", 0)
 
-	--draw land & terrain features
+	--draw land & terrain features (-> stencil shape)
 	drawTerrain()
-	-- love.graphics.draw(painting)
 	
 	--mouse-linked line
 	-- love.graphics.line(points[#points].x, points[#points].y, mouseX, mouseY)
 	-- love.graphics.line(newLine.x1, newLine.y1, newLine.x2, newLine.y2)
 	
+	--revert to normal drawing
 	love.graphics.setStencilTest()
 	
 	drawStructuresAndLeylines()
@@ -237,9 +243,11 @@ function drawTerrainVision()
 end
 
 function drawTerrain()
+	--this is where a background canvas will be drawn! TODO
 	love.graphics.setColor(63, 127, 63)
 	love.graphics.rectangle("fill", 0, 0, canvasWidth, canvasHeight)
 	
+	--...and not this so much, i don't think. TODO
 	for k, thing in pairs(landFeatures) do
 	love.graphics.setColor(thing.type.r, thing.type.g, thing.type.b, 255)
 		love.graphics.circle("fill", thing.x, thing.y, 4, 4)
@@ -297,6 +305,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+--build a thing, but make sure it's allowed first (visible area, not crowding, have materials)
 function tryToBuildA(type, x, y)
 	local allowed = true
 	errorMsg = ""
