@@ -1,7 +1,27 @@
 --map.lua: most code to do with stencils, canvases, and drawing the map lives here
 	
 function generateIsland()
-	print("generateIsland not implemented")
+	print("generateIsland not implemented (but start with generateMultiOctavePerlinNoise)")
+end
+
+function generateMultiOctavePerlinNoise()
+	pixels = {}
+	for i = 1, screenWidth do
+		pixels[i] = {}
+		for j = 1, screenHeight do
+			pixels[i][j] = 0
+			-- + love.math.noise(i / 256 + seed, j / 256 + seed) * 128
+			+ love.math.noise(i / 128 + seed, j / 128 + seed) * 128
+			+ love.math.noise(i / 64 + seed, j / 64 + seed) * 64
+			+ love.math.noise(i / 32 + seed, j / 32 + seed) * 32
+			+ love.math.noise(i / 16 + seed, j / 16 + seed) * 16
+			+ love.math.noise(i / 8 + seed, j / 8 + seed) * 8
+			+ love.math.noise(i / 4 + seed, j / 4 + seed) * 4
+			-- + love.math.noise(i / 2 + seed, j / 2 + seed) * 2
+			
+			pixels[i][j] = math.floor(pixels[i][j] / 32) * 32
+		end
+	end
 end	
 
 function drawMap()
