@@ -1,0 +1,34 @@
+temple: every pair makes a leyline. cost increases quickly. only gathers local resources when built? or when clicked?
+village: slowly gathers local resources. cost increases slowly. leyline effect = slightly faster gathering
+
+quarry: gathers stone from red areas. medium cost increase. leyline effect = faster gathering
+mill: gathers wood from green areas. medium cost increase. leyline effect = faster gathering, also produces food?
+farm: gathers food from blue areas. medium cost increase. leyline effect = faster gathering, also produces wood and stone?
+
+tower: reveals terrain, slowly gathers local resources. medium cost increase. leyline effect = sees much further
+
+monument: cost increases quickly. leyline effect = lengthens leyline! TODO actually see if this works
+signpost: cost increases quickly. leyline effect = turns water under leyline into land (like a bridge)
+
+green -> wood, red -> stone, blue -> food (water and fish)?
+are people a resource, too? or just abstracted to food?
+
+other ideas:
+- different structure "blueprints" have to be discovered. just uncover the terrain & click to acquire or something
+- scrying for rare/unique items: send out 5 evently spaced lines; something good is on one of those lines; can use multiples to triangulate to distant points (but not perfectly)
+- large temples for uniting distant areas, i.e. regular temples' leylines have a length limit, but better ones can link farther
+- elevation increases vision for any structure. mountaintops are ideal.
+  - maybe looking uphill is also harder? could be a lot harder to do if tall mountains block your view or something, though...
+
+TODO, generally
+- proper terrain generation
+- enlarged + griddy map (scaled canvas, should be easy)
+- map scrolling in a limited window
+- [ability to] preview lines & structures before placing
+- on-hover effects for lines & structures
+- store local resource-related properties within structures at time of building
+- make type-in-table implementation pattern more consistent. it's ok to reference one table from another! probably!
+- similarly, make color implementation patterns more consistent. i forgot that setColor() can take a table {1,2,3,4}, which sure seems more efficient than {r=1, g=2, b=3, a=4}
+- art.
+- sound?
+- actual good UI, not wonky, debuggy stuff. maybe a sidebar with buttons?
