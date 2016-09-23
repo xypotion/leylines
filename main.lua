@@ -7,14 +7,15 @@ function love.load()
 	--basics & graphics
 	DEBUG = true
 	TWO_THIRDS = 2 / 3
-		
-	math.randomseed(os.time())
+
+	seed = os.time() % 2 ^ 16
+	math.randomseed(seed)
 	
-	canvasWidth, canvasHeight = 512, 512
-	love.window.setMode(canvasWidth, canvasHeight)
+	mapCanvasWidth, mapCanvasHeight = 512, 512
+	love.window.setMode(mapCanvasWidth, mapCanvasHeight)
 		
 	--TODO rename to mapCanvas, since that's what you mean
-	canvas = love.graphics.newCanvas(canvasWidth, canvasHeight)
+	canvas = love.graphics.newCanvas(mapCanvasWidth, mapCanvasHeight)
 	canvas:setFilter('nearest', 'nearest', 0)
 	
 	-- painting = love.graphics.newImage("painting3.jpg")

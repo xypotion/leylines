@@ -16,7 +16,7 @@ function startGame()
 	generateIsland()
 	
 	structures = {}
-	buildA("Temple", canvasWidth / 2, canvasHeight / 2) --debug
+	buildA("Temple", mapCanvasWidth / 2, mapCanvasHeight / 2) --debug
 end
 
 function resourceTimer(dt)

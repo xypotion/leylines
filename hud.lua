@@ -46,11 +46,11 @@ function drawHUD()
 		text = text..resourceRates[resource].."/s"
 		text = text.."\n\n"
 	end
-	love.graphics.printf(text, 0, 10, canvasWidth - 10, "right")
+	love.graphics.printf(text, 0, 10, mapCanvasWidth - 10, "right")
 	
 	--error message
 	love.graphics.setColor(255, 191, 191)
-	love.graphics.printf(errorMsg, 0, 10, canvasWidth, "center")
+	love.graphics.printf(errorMsg, 0, 10, mapCanvasWidth, "center")
 end
 
 

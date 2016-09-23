@@ -35,4 +35,33 @@ end
 
 function loadLandInfo()
 	--TODO some data about land colors. probably just for stone and wood for now
+	landTypes = {
+		Ocean = {color = {31, 31, 191}},
+		Shoal = {color = {63, 63, 191}},
+		Beach = {color = {223, 223, 127}},
+		Forest = {color = {63, 191, 63}},
+		Mountain = {color = {127, 127, 0}},
+		Snow = {color = {223, 223, 223}},
+	}
+end
+
+function stratifyTerrain()
+	for i = 1, #terrain do
+		for j = 1, #terrain[i] do
+			local t = terrain[i][j]
+			if t <= 64 then
+				terrain[i][j] = landTypes.Ocean
+			elseif t <= 96 then
+				terrain[i][j] = landTypes.Shoal
+			elseif t <= 128 then
+				terrain[i][j] = landTypes.Beach
+			elseif t <= 160 then
+				terrain[i][j] = landTypes.Forest
+			elseif t <= 192 then
+				terrain[i][j] = landTypes.Mountain
+			elseif t <= 224 then
+				terrain[i][j] = landTypes.Snow
+			end
+		end
+	end
 end
