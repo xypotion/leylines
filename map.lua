@@ -1,12 +1,41 @@
 --map.lua: most code to do with stencils, canvases, and drawing the map lives here
+
+function initMap()
+	mapCanvasWidth, mapCanvasHeight = 512, 512
+	love.window.setMode(mapCanvasWidth, mapCanvasHeight)
+		
+	--TODO rename to mapCanvas, since that's what you mean
+	worldCanvas = love.graphics.newCanvas(mapCanvasWidth, mapCanvasHeight)
+	worldCanvas:setFilter('nearest', 'nearest', 0)
 	
+	worldScale = 3
+	setWorldCanvasLocation()
+end
+
+function setWorldCanvasLocation()
+	worldCanvasX = mapCanvasWidth / 2 - mapCanvasWidth * worldScale / 2
+	worldCanvasY = mapCanvasHeight / 2 - mapCanvasHeight * worldScale / 2
+end
+
+function getWorldCanvasMouseCoordinates()--mx, my)
+	local mx, my = love.mouse.getPosition()
+	local worldX = math.floor(mx / worldScale - worldCanvasX / worldScale)--mapCanvasWidth * -2 + mapCanvasWidth / worldScale * 2
+	local worldY = math.floor(my / worldScale - worldCanvasY / worldScale)--mapCanvasHeight * -2 + mapCanvasHeight / worldScale * 2
+	-- worldCanvasY = mapCanvasHeight / 2 - mapCanvasHeight * worldScale / 2
+	
+	-- print(worldX, worldY)
+	
+	return worldX, worldY
+end
+
 function generateIsland()
-	-- print("generateIsland not implemented (but start with generateMultiOctavePerlinNoise)")
-	
+	--make sum noize
 	terrain = generateMultiOctavePerlinNoise()
 	
-	-- colorTerrainMap()
+	--plain elevations become land types
 	stratifyTerrain()
+	
+	--draw terrain once to a special canvas
 	drawTerrainToTerrainCanvas()
 end
 
@@ -39,10 +68,9 @@ function generateMultiOctavePerlinNoise()
 	end
 	
 	--debug
-	table.sort(foo)
-	for f, oo in pairs(foo) do
-		print(f, oo.count)
-	end
+	-- for f, oo in pairs(foo) do
+	-- 	print(f, oo.count)
+	-- end
 	
 	return grid
 end
@@ -69,7 +97,7 @@ end
 
 function drawMap()
 	--canvas setup
-	love.graphics.setCanvas(canvas)
+	love.graphics.setCanvas(worldCanvas)
 	love.graphics.clear()
 	
 	--grey fog of war
@@ -92,6 +120,13 @@ function drawMap()
 	love.graphics.setStencilTest()
 	
 	drawStructuresAndLeylines()
+
+	--draw the map (terrain + stuff)
+	love.graphics.setColor(255, 255, 255)
+	love.graphics.setCanvas()
+	love.graphics.draw(worldCanvas, worldCanvasX, worldCanvasY, 0, worldScale)
+	
+	love.graphics.setStencilTest()
 end
 
 --how far each structure can "see" TODO obviously needs lots of changes if you're scaling up the whole game
@@ -113,19 +148,9 @@ function drawTerrainVision()
 end
 
 function drawTerrain()
-	--this is where a background canvas will be drawn! TODO
 	love.graphics.setColor(255, 255, 255)
 	
-	-- love.graphics.setColor(63, 127, 63)
-	-- love.graphics.rectangle("fill", 0, 0, mapCanvasWidth, mapCanvasHeight)
-	
 	love.graphics.draw(terrainCanvas)
-	
-	--...and not this so much, i don't think. TODO
-	-- for k, thing in pairs(landFeatures) do
-	-- love.graphics.setColor(thing.type.r, thing.type.g, thing.type.b, 255)
-	-- 	love.graphics.circle("fill", thing.x, thing.y, 4, 4)
-	-- end
 end
 
 function drawStructuresAndLeylines()

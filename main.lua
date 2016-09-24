@@ -11,14 +11,7 @@ function love.load()
 	seed = os.time() % 2 ^ 16
 	math.randomseed(seed)
 	
-	mapCanvasWidth, mapCanvasHeight = 512, 512
-	love.window.setMode(mapCanvasWidth, mapCanvasHeight)
-		
-	--TODO rename to mapCanvas, since that's what you mean
-	canvas = love.graphics.newCanvas(mapCanvasWidth, mapCanvasHeight)
-	canvas:setFilter('nearest', 'nearest', 0)
-	
-	-- painting = love.graphics.newImage("painting3.jpg")
+	initMap()
 	
 	--constants
 	minNeighborDistance = 20
@@ -28,14 +21,19 @@ function love.load()
 	loadStructureInfo()
 	
 	initHUD()
-	buildMode = "Temple" --debug
+	buildMode = "Tower" --debug
 	
 	startGame()
+	
+	for k, v in pairs(love.graphics.getSystemLimits()) do
+		print(k, v)
+	end
 end
 
 function love.update(dt)
 	--TODO move to "updateHUD()" or something
 	mouseX, mouseY = love.mouse.getPosition()
+	-- mouseX, mouseY = getWorldCanvasMouseCoordinates()--mouseX, mouseY)
 	hoveredButtonType = mouseOnButton(mouseX, mouseY)
 	if hoveredButtonType then updateToolTip(hoveredButtonType) end
 	
@@ -53,7 +51,8 @@ function love.mousepressed(x, y)
 		buildMode = hoveredButtonType
 	else
 		if structureInfo[buildMode] then
-			tryToBuildA(buildMode, x, y)
+			local mx, my = getWorldCanvasMouseCoordinates() --TODO probably unnecessary; just use mouseX and mouseY
+			tryToBuildA(buildMode, mx, my)
 		end
 	end	
 end
@@ -85,9 +84,4 @@ function love.draw()
 	
 	--canvas drawing 
 	--TODO move to drawMap, i guess?
-	love.graphics.setColor(255, 255, 255)
-	love.graphics.setCanvas()
-	love.graphics.draw(canvas)
-	
-	love.graphics.setStencilTest()
 end

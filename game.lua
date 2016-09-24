@@ -103,7 +103,7 @@ end
 
 function clickingGreen(x, y)
 	local c = {r=0, g=0, b=0, a=0}
-	local iData = canvas:newImageData()
+	local iData = worldCanvas:newImageData()
 	
 	c.r, c.g, c.b = iData:getPixel(x, y)
 	
