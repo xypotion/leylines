@@ -2,6 +2,7 @@ require "hud"
 require "game"
 require "content"
 require "map"
+require "images"
 
 function love.load()
 	--basics & graphics
@@ -13,6 +14,8 @@ function love.load()
 	
 	initMap()
 	
+	loadImages()
+	
 	loadLandInfo()
 	loadStructureInfo()
 	
@@ -20,10 +23,11 @@ function love.load()
 	buildMode = "Tower" --debug
 	
 	startGame()
-	
-	for k, v in pairs(love.graphics.getSystemLimits()) do
-		print(k, v)
-	end
+
+	--debug
+	-- for k, v in pairs(love.graphics.getSystemLimits()) do
+	-- 	print(k, v)
+	-- end
 end
 
 function love.update(dt)

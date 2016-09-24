@@ -32,3 +32,4 @@ TODO, generally
 - art.
 - sound?
 - actual good UI, not wonky, debuggy stuff. maybe a sidebar with buttons?
+- warning for users on machines that can't handle multicanvases (i'm using 3 at once so far)

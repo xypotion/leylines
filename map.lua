@@ -4,12 +4,17 @@ function initMap()
 	mapCanvasWidth, mapCanvasHeight = 720, 720
 	love.window.setMode(mapCanvasWidth, mapCanvasHeight)
 		
-	--TODO rename to mapCanvas, since that's what you mean
+	--worldCanvas = for drawing terrain and fog of war
 	worldCanvas = love.graphics.newCanvas(mapCanvasWidth, mapCanvasHeight)
-	worldCanvas:setFilter('nearest', 'nearest', 0)
+	worldCanvas:setFilter('linear', 'nearest', 0)
 	
-	worldScale = 10
+	worldScale = 16
 	setWorldCanvasLocation()
+	
+	--stuffCanvas = for drawing structures and leylines
+	stuffCanvas = love.graphics.newCanvas(mapCanvasWidth, mapCanvasHeight) --TODO probably not right? maybe have own versions?
+	stuffCanvas:setFilter('linear', 'nearest', 0)
+	stuffScale = worldScale / 16
 	
 	--constants
 	minNeighborDistance = 4
@@ -127,6 +132,11 @@ function drawMap()
 	love.graphics.setCanvas()
 	love.graphics.draw(worldCanvas, worldCanvasX, worldCanvasY, 0, worldScale)
 	
+	--another layer for graphics and lines?
+	love.graphics.setCanvas()
+	love.graphics.draw(templeImg,  mapCanvasWidth / 2 - worldScale / 2, mapCanvasHeight / 2 - worldScale / 2, 0, 1)
+	
+	--necessary for ???
 	love.graphics.setStencilTest()
 end
 
