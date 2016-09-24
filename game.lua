@@ -118,7 +118,7 @@ end
 function overMinDistanceFromNeighbors(x, y)
 	local overMin = true
 	for k, s in pairs(structures) do
-		if distanceBetween(s, {x = x, y = y}) < 20 then
+		if distanceBetween(s, {x = x, y = y}) < minNeighborDistance then
 			overMin = false
 			-- print ("too close!")
 			errorMsg = errorMsg.."too close to other structures.\n"

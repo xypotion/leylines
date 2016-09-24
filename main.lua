@@ -13,10 +13,6 @@ function love.load()
 	
 	initMap()
 	
-	--constants
-	minNeighborDistance = 20
-	lineTouchTolerance = 3
-	
 	loadLandInfo()
 	loadStructureInfo()
 	
@@ -33,7 +29,6 @@ end
 function love.update(dt)
 	--TODO move to "updateHUD()" or something
 	mouseX, mouseY = love.mouse.getPosition()
-	-- mouseX, mouseY = getWorldCanvasMouseCoordinates()--mouseX, mouseY)
 	hoveredButtonType = mouseOnButton(mouseX, mouseY)
 	if hoveredButtonType then updateToolTip(hoveredButtonType) end
 	
@@ -51,7 +46,7 @@ function love.mousepressed(x, y)
 		buildMode = hoveredButtonType
 	else
 		if structureInfo[buildMode] then
-			local mx, my = getWorldCanvasMouseCoordinates() --TODO probably unnecessary; just use mouseX and mouseY
+			local mx, my = getWorldCanvasMouseCoordinates()
 			tryToBuildA(buildMode, mx, my)
 		end
 	end	

@@ -1,15 +1,19 @@
 --map.lua: most code to do with stencils, canvases, and drawing the map lives here
 
 function initMap()
-	mapCanvasWidth, mapCanvasHeight = 512, 512
+	mapCanvasWidth, mapCanvasHeight = 720, 720
 	love.window.setMode(mapCanvasWidth, mapCanvasHeight)
 		
 	--TODO rename to mapCanvas, since that's what you mean
 	worldCanvas = love.graphics.newCanvas(mapCanvasWidth, mapCanvasHeight)
 	worldCanvas:setFilter('nearest', 'nearest', 0)
 	
-	worldScale = 3
+	worldScale = 10
 	setWorldCanvasLocation()
+	
+	--constants
+	minNeighborDistance = 4
+	lineTouchTolerance = 2
 end
 
 function setWorldCanvasLocation()
@@ -19,11 +23,8 @@ end
 
 function getWorldCanvasMouseCoordinates()--mx, my)
 	local mx, my = love.mouse.getPosition()
-	local worldX = math.floor(mx / worldScale - worldCanvasX / worldScale)--mapCanvasWidth * -2 + mapCanvasWidth / worldScale * 2
-	local worldY = math.floor(my / worldScale - worldCanvasY / worldScale)--mapCanvasHeight * -2 + mapCanvasHeight / worldScale * 2
-	-- worldCanvasY = mapCanvasHeight / 2 - mapCanvasHeight * worldScale / 2
-	
-	-- print(worldX, worldY)
+	local worldX = math.floor(mx / worldScale - worldCanvasX / worldScale)
+	local worldY = math.floor(my / worldScale - worldCanvasY / worldScale)
 	
 	return worldX, worldY
 end
