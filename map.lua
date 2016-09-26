@@ -1,38 +1,46 @@
 --map.lua: most code to do with stencils, canvases, and drawing the map lives here
 
 function initMap()
-	mapCanvasWidth, mapCanvasHeight = 720, 720
+	mapCanvasWidth, mapCanvasHeight = 720, 720 --TODO these need to be not-global (i think)
 	love.window.setMode(mapCanvasWidth, mapCanvasHeight)
 		
 	--worldCanvas = for drawing terrain and fog of war
-	worldCanvas = love.graphics.newCanvas(mapCanvasWidth, mapCanvasHeight)
-	worldCanvas:setFilter('linear', 'nearest', 0)
+	--yes, terrain is also on its own canvas, but it's drawn to the world canvas
+	worldContainer = {}
+	worldContainer.canvas = love.graphics.newCanvas(mapCanvasWidth, mapCanvasHeight)
+	worldContainer.canvas:setFilter('linear', 'nearest', 0)
 	
-	worldScale = 16
+	worldContainer.scale = 16
 	setWorldCanvasLocation()
 	
 	--stuffCanvas = for drawing structures and leylines
-	stuffCanvas = love.graphics.newCanvas(mapCanvasWidth, mapCanvasHeight) --TODO probably not right? maybe have own versions?
-	stuffCanvas:setFilter('linear', 'nearest', 0)
-	stuffScale = worldScale / 16
+	stuffContainer = {} --TODO this name... yeah. :/
+	stuffContainer.canvas = love.graphics.newCanvas(mapCanvasWidth, mapCanvasHeight) --TODO probably not right? maybe have own versions?
+	stuffContainer.canvas:setFilter('linear', 'nearest', 0)
+	stuffContainer.scale = worldContainer.scale / 16
+	
+	stuffContainer.x, stuffContainer.y = 0, 0 --debug TODO another setLocation function, or fold into world's. won't they always move together?
 	
 	--constants
 	minNeighborDistance = 4
 	lineTouchTolerance = 2
 end
 
+
+------------move us
 function setWorldCanvasLocation()
-	worldCanvasX = mapCanvasWidth / 2 - mapCanvasWidth * worldScale / 2
-	worldCanvasY = mapCanvasHeight / 2 - mapCanvasHeight * worldScale / 2
+	worldContainer.x = mapCanvasWidth / 2 - mapCanvasWidth * worldContainer.scale / 2
+	worldContainer.y = mapCanvasHeight / 2 - mapCanvasHeight * worldContainer.scale / 2
 end
 
 function getWorldCanvasMouseCoordinates()--mx, my)
 	local mx, my = love.mouse.getPosition()
-	local worldX = math.floor(mx / worldScale - worldCanvasX / worldScale)
-	local worldY = math.floor(my / worldScale - worldCanvasY / worldScale)
+	local worldX = math.floor(mx / worldContainer.scale - worldContainer.x / worldContainer.scale)
+	local worldY = math.floor(my / worldContainer.scale - worldContainer.y / worldContainer.scale)
 	
 	return worldX, worldY
 end
+---------------
 
 function generateIsland()
 	--make sum noize
@@ -103,7 +111,7 @@ end
 
 function drawMap()
 	--canvas setup
-	love.graphics.setCanvas(worldCanvas)
+	love.graphics.setCanvas(worldContainer.canvas)
 	love.graphics.clear()
 	
 	--grey fog of war
@@ -130,11 +138,12 @@ function drawMap()
 	--draw the map (terrain + stuff)
 	love.graphics.setColor(255, 255, 255)
 	love.graphics.setCanvas()
-	love.graphics.draw(worldCanvas, worldCanvasX, worldCanvasY, 0, worldScale)
+	love.graphics.draw(worldContainer.canvas, worldContainer.x, worldContainer.y, 0, worldContainer.scale)
 	
 	--another layer for graphics and lines?
 	love.graphics.setCanvas()
-	love.graphics.draw(templeImg,  mapCanvasWidth / 2 - worldScale / 2, mapCanvasHeight / 2 - worldScale / 2, 0, 1)
+	--debug, obviously
+	love.graphics.draw(templeImg,  mapCanvasWidth / 2 - worldContainer.scale / 2, mapCanvasHeight / 2 - worldContainer.scale / 2, 0, 1)
 	
 	--necessary for ???
 	love.graphics.setStencilTest()

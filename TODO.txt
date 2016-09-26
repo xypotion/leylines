@@ -26,11 +26,15 @@ other ideas:
 	- need special lines/structures to reveal special resources? e.g. magnetic lines reveal iron (mining = pure guesswork, otherwise)
 	- different kinds of temples make different kinds of leylines (wood, stone, food, etc)
 	  - "great" temples, too (aligned and unaligned), that only link with each other & have powerful effects
-  - maybe play as different ancient societies with different bonuses? (druids = cheaper wood temples, vikings = good at sailing, etc)
+		- food temples should be called harvest temples ;)
+  - maybe play as different ancient cultures with different bonuses? (druids = cheaper wood temples, vikings = good at sailing, etc)
 
 TODO, generally
-- proper terrain generation
-- enlarged + griddy map (scaled canvas, should be easy)
+- actual good UI in a sidebar
+- proper terrain generation (we're getting there)
+- drag-and-drop for structure building? normal clicking should be for moving the map, at least (i.e. dragging around)
+- buttons for zooming in/out on the map. maybe 4x little previews (just versions of the world canvas at different scales? :))
+- enlarged + griddy map (scaled canvas, should be easy) (getting there. need to separate structures+lines from terrain+fog)
 - map scrolling in a limited window
 - [ability to] preview lines & structures before placing
 - on-hover effects for lines & structures
@@ -39,5 +43,22 @@ TODO, generally
 - similarly, make color implementation patterns more consistent. i forgot that setColor() can take a table {1,2,3,4}, which sure seems more efficient than {r=1, g=2, b=3, a=4}
 - art.
 - sound?
-- actual good UI, not wonky, debuggy stuff. maybe a sidebar with buttons?
 - warning for users on machines that can't handle multicanvases (i'm using 3 at once so far)
+- better-looking fog?
+
+cultural effects, if doing...
+- inuit: good in water; bad on land
+  - wait, inuit might be ancient but they aren't extinct. might be odd
+- vikings: great at exploring on water; need more food?
+- druids: wood stuff. cheaper wood temples? all temples draw wood lines?
+- egyptians: better at gathering stuff from sand?
+- ancient greek? ancient roman?
+- mesopotamian/babylonian: ...something to do with rivers??
+- mayan/incan/aztec
+- navaho/iroquois/apache/ainu/others?
+- unlockable: martian, lemurian, narnian?, elven?, ysian?
+- someone whose leylines are just longer
+- someone who makes ley-circles between triplets of temples, not lines between pairs (hard! but cool and different!)
+* no idea for most of these. looks like you'll have to do some research!
+  - maybe start by googling "ancient civilizations"
+* temples and stuff should have different graphics for different cultures! :)

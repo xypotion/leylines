@@ -101,9 +101,10 @@ function costMet(type)
 	return costMet
 end
 
+--TODO all of this will have to go! use cell attributes, not clicked pixel color
 function clickingGreen(x, y)
 	local c = {r=0, g=0, b=0, a=0}
-	local iData = worldCanvas:newImageData()
+	local iData = worldContainer.canvas:newImageData() 
 	
 	c.r, c.g, c.b = iData:getPixel(x, y)
 	
