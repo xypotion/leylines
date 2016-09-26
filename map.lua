@@ -11,16 +11,17 @@ function initMap()
 	worldContainer.canvas:setFilter('linear', 'nearest', 0)
 	
 	worldContainer.scale = 16
-	setWorldCanvasLocation()
 	
 	--stuffCanvas = for drawing structures and leylines
 	stuffContainer = {} --TODO this name... yeah. :/
 	stuffContainer.canvas = love.graphics.newCanvas(mapCanvasWidth, mapCanvasHeight) --TODO probably not right? maybe have own versions?
 	stuffContainer.canvas:setFilter('linear', 'nearest', 0)
-	stuffContainer.scale = worldContainer.scale / 16
 	
-	stuffContainer.x, stuffContainer.y = 0, 0 --debug TODO another setLocation function, or fold into world's. won't they always move together?
+	stuffContainer.scale = worldContainer.scale / 16 --the trick is actually to change the points' distributions, not to scale the draw TODO
 	
+	--should be called whenever canvas is zoomed or scrolled (i guess?)
+	setWorldAndStuffCanvasLocation()
+		
 	--constants
 	minNeighborDistance = 4
 	lineTouchTolerance = 2
@@ -28,9 +29,11 @@ end
 
 
 ------------move us
-function setWorldCanvasLocation()
+function setWorldAndStuffCanvasLocation()
 	worldContainer.x = mapCanvasWidth / 2 - mapCanvasWidth * worldContainer.scale / 2
 	worldContainer.y = mapCanvasHeight / 2 - mapCanvasHeight * worldContainer.scale / 2
+	
+	stuffContainer.x, stuffContainer.y = 0,0--worldContainer.x, worldContainer.y --TODO chanto shinasai!
 end
 
 function getWorldCanvasMouseCoordinates()--mx, my)
@@ -110,7 +113,7 @@ function drawTerrainToTerrainCanvas()
 end
 
 function drawMap()
-	--canvas setup
+	--canvas setup: world (terrain + fog/vision) first
 	love.graphics.setCanvas(worldContainer.canvas)
 	love.graphics.clear()
 	
@@ -133,17 +136,25 @@ function drawMap()
 	--revert to normal drawing
 	love.graphics.setStencilTest()
 	
+	
+	--canvas setup: structures and lines next
+	love.graphics.setCanvas(stuffContainer.canvas)
+	love.graphics.clear()
+	
 	drawStructuresAndLeylines()
 
-	--draw the map (terrain + stuff)
+	--actually draw the terrain, then the stuff)
 	love.graphics.setColor(255, 255, 255)
 	love.graphics.setCanvas()
+	
 	love.graphics.draw(worldContainer.canvas, worldContainer.x, worldContainer.y, 0, worldContainer.scale)
+	
+	love.graphics.draw(stuffContainer.canvas, stuffContainer.x, stuffContainer.y, 0, stuffContainer.scale)
 	
 	--another layer for graphics and lines?
 	love.graphics.setCanvas()
 	--debug, obviously
-	love.graphics.draw(templeImg,  mapCanvasWidth / 2 - worldContainer.scale / 2, mapCanvasHeight / 2 - worldContainer.scale / 2, 0, 1)
+	-- love.graphics.draw(templeImg,  mapCanvasWidth / 2 - worldContainer.scale / 2, mapCanvasHeight / 2 - worldContainer.scale / 2, 0, 1)
 	
 	--necessary for ???
 	love.graphics.setStencilTest()
@@ -173,17 +184,20 @@ function drawTerrain()
 	love.graphics.draw(terrainCanvas)
 end
 
-function drawStructuresAndLeylines()
-	--structures
-	for k, s in pairs(structures) do
-		love.graphics.setColor(structureInfo[s.type].r, structureInfo[s.type].g + s.numLines * 32, structureInfo[s.type].b, 255)
-		love.graphics.circle("fill", s.x, s.y, structureInfo[s.type].size)
-	end
-	
+--actual resolution is 1-to-1; the scale is used to change elements' draw positions
+--TODO ultimately should probably separate into two functions
+function drawStructuresAndLeylines()--cx, cy, cs) --canvas' x, canvas' y, canvas' scale
 	--lines
 	love.graphics.setLineWidth(1)
 	for i = 1, #lines do
 		love.graphics.setColor(lines[i].color)
-		love.graphics.line(lines[i].x1, lines[i].y1, lines[i].x2, lines[i].y2)
+		love.graphics.line(lines[i].x1 * 16 + worldContainer.x, lines[i].y1 * 16 + worldContainer.y, lines[i].x2 * 16 + worldContainer.x, lines[i].y2 * 16 + worldContainer.y)
+	end
+	
+	--structures
+	for k, s in pairs(structures) do
+		love.graphics.setColor(structureInfo[s.type].r, structureInfo[s.type].g + s.numLines * 32, structureInfo[s.type].b, 255)
+		-- love.graphics.circle("fill", s.x, s.y, structureInfo[s.type].size)
+		love.graphics.draw(templeImg, s.x * 16 + worldContainer.x - 16, s.y * 16 + worldContainer.y - 16)
 	end
 end
