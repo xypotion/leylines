@@ -28,6 +28,11 @@ function love.load()
 	-- for k, v in pairs(love.graphics.getSystemLimits()) do
 	-- 	print(k, v)
 	-- end
+	
+	--debug
+	fpsCounter = 0
+	frameCounter = 0
+	fpsWarning = 58
 end
 
 function love.update(dt)
@@ -41,6 +46,17 @@ function love.update(dt)
 	
 	--changes lines' lengths and recalculates leyline powers
 	updateLinesAndRecalculate(dt)
+	
+	--debug for FPS
+	fpsCounter = fpsCounter + dt
+	frameCounter = frameCounter + 1
+	if fpsCounter > 1 then
+		if frameCounter <= fpsWarning then
+			print("FPS = "..frameCounter)
+		end
+		frameCounter = 0
+	end
+	fpsCounter = fpsCounter % 1
 end
 
 --either you're clicking a HUD button or building a structure.
