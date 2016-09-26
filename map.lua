@@ -117,6 +117,30 @@ function drawMap()
 	love.graphics.setCanvas(worldContainer.canvas)
 	love.graphics.clear()
 	
+	drawFogAndTerrain()
+	
+	--canvas setup: structures and lines next
+	love.graphics.setCanvas(stuffContainer.canvas)
+	love.graphics.clear()
+	
+	drawLeylines()
+
+	drawStructures()
+	
+	--mouse-linked line
+	-- love.graphics.line(points[#points].x, points[#points].y, mouseX, mouseY)
+	-- love.graphics.line(newLine.x1, newLine.y1, newLine.x2, newLine.y2)
+	
+	--actually draw the terrain, then the stuff)
+	love.graphics.setColor(255, 255, 255)
+	love.graphics.setCanvas()
+	
+	love.graphics.draw(worldContainer.canvas, worldContainer.x, worldContainer.y, 0, worldContainer.scale)
+	
+	love.graphics.draw(stuffContainer.canvas, stuffContainer.x, stuffContainer.y, 0, stuffContainer.scale)
+end
+
+function drawFogAndTerrain()
 	--grey fog of war
 	love.graphics.setColor(63, 63, 63)	
 	love.graphics.rectangle("fill", 0, 0, mapCanvasWidth, mapCanvasHeight)
@@ -129,38 +153,12 @@ function drawMap()
 	--draw land & terrain features (-> stencil shape)
 	drawTerrain()
 	
-	--mouse-linked line
-	-- love.graphics.line(points[#points].x, points[#points].y, mouseX, mouseY)
-	-- love.graphics.line(newLine.x1, newLine.y1, newLine.x2, newLine.y2)
-	
 	--revert to normal drawing
-	love.graphics.setStencilTest()
-	
-	
-	--canvas setup: structures and lines next
-	love.graphics.setCanvas(stuffContainer.canvas)
-	love.graphics.clear()
-	
-	drawStructuresAndLeylines()
-
-	--actually draw the terrain, then the stuff)
-	love.graphics.setColor(255, 255, 255)
-	love.graphics.setCanvas()
-	
-	love.graphics.draw(worldContainer.canvas, worldContainer.x, worldContainer.y, 0, worldContainer.scale)
-	
-	love.graphics.draw(stuffContainer.canvas, stuffContainer.x, stuffContainer.y, 0, stuffContainer.scale)
-	
-	--another layer for graphics and lines?
-	love.graphics.setCanvas()
-	--debug, obviously
-	-- love.graphics.draw(templeImg,  mapCanvasWidth / 2 - worldContainer.scale / 2, mapCanvasHeight / 2 - worldContainer.scale / 2, 0, 1)
-	
-	--necessary for ???
 	love.graphics.setStencilTest()
 end
 
---how far each structure can "see" TODO obviously needs lots of changes if you're scaling up the whole game
+--how far each structure can "see"; only called from love.graphics.stencil() in drawMap()!
+--TODO obviously needs lots of changes if you're scaling up the whole game
 function drawTerrainVision()
 	love.graphics.setColor(255, 255, 255, 255)
 	
@@ -186,14 +184,16 @@ end
 
 --actual resolution is 1-to-1; the scale is used to change elements' draw positions
 --TODO ultimately should probably separate into two functions
-function drawStructuresAndLeylines()--cx, cy, cs) --canvas' x, canvas' y, canvas' scale
+function drawLeylines()
 	--lines
 	love.graphics.setLineWidth(1)
 	for i = 1, #lines do
 		love.graphics.setColor(lines[i].color)
 		love.graphics.line(lines[i].x1 * 16 + worldContainer.x, lines[i].y1 * 16 + worldContainer.y, lines[i].x2 * 16 + worldContainer.x, lines[i].y2 * 16 + worldContainer.y)
 	end
+end
 	
+function drawStructures()
 	--structures
 	for k, s in pairs(structures) do
 		love.graphics.setColor(structureInfo[s.type].r, structureInfo[s.type].g + s.numLines * 32, structureInfo[s.type].b, 255)

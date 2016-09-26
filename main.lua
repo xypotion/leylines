@@ -62,17 +62,15 @@ function love.keypressed(key)
 		if key == "escape" then
 			love.event.quit()
 		elseif key == "w" then
-			resources.Wood = resources.Wood * 2
+			resources.Wood = resources.Wood + 10 ^ 6
 		elseif key == "s" then
-			resources.Stone = resources.Stone * 2
+			resources.Stone = resources.Stone + 10 ^ 6
 		elseif key == "x" then
 			-- print("\nSTART")
 			calculateLeylinePower()
 		end
 	end
 end
-
-
 
 function love.draw()
 	--draw map where structures, leylines, background, and fog appear
