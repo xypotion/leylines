@@ -19,6 +19,14 @@ other ideas:
 - large temples for uniting distant areas, i.e. regular temples' leylines have a length limit, but better ones can link farther
 - elevation increases vision for any structure. mountaintops are ideal.
   - maybe looking uphill is also harder? could be a lot harder to do if tall mountains block your view or something, though...
+	- maybe use terrain noise to generate and store these shapes (not just circles) separately + draw them at stencil stage
+* after taking a long nature walk today...
+	- upgrading basic settlements and temples -> other structures, usually more specialized
+	  - temple (plain line only)-> stone temple (plain + weak stone line) -> great stone temple (strong stone line, no plain line?)
+	- need special lines/structures to reveal special resources? e.g. magnetic lines reveal iron (mining = pure guesswork, otherwise)
+	- different kinds of temples make different kinds of leylines (wood, stone, food, etc)
+	  - "great" temples, too (aligned and unaligned), that only link with each other & have powerful effects
+  - maybe play as different ancient societies with different bonuses? (druids = cheaper wood temples, vikings = good at sailing, etc)
 
 TODO, generally
 - proper terrain generation
