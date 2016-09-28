@@ -1,69 +1,41 @@
-temple: every pair makes a leyline. cost increases quickly. only gathers local resources when built? or when clicked?
-village: slowly gathers local resources. cost increases slowly. leyline effect = slightly faster gathering
-
-quarry: gathers stone from red areas. medium cost increase. leyline effect = faster gathering
-mill: gathers wood from green areas. medium cost increase. leyline effect = faster gathering, also produces food?
-farm: gathers food from blue areas. medium cost increase. leyline effect = faster gathering, also produces wood and stone?
-
-tower: reveals terrain, slowly gathers local resources. medium cost increase. leyline effect = sees much further
-
-monument: cost increases quickly. leyline effect = lengthens leyline! TODO actually see if this works
-signpost: cost increases quickly. leyline effect = turns water under leyline into land (like a bridge)
-
-green -> wood, red -> stone, blue -> food (water and fish)?
-are people a resource, too? or just abstracted to food?
-
-other ideas:
-- different structure "blueprints" have to be discovered. just uncover the terrain & click to acquire or something
-- scrying for rare/unique items: send out 5 evently spaced lines; something good is on one of those lines; can use multiples to triangulate to distant points (but not perfectly)
-- large temples for uniting distant areas, i.e. regular temples' leylines have a length limit, but better ones can link farther
-- elevation increases vision for any structure. mountaintops are ideal.
-  - maybe looking uphill is also harder? could be a lot harder to do if tall mountains block your view or something, though...
-	- maybe use terrain noise to generate and store these shapes (not just circles) separately + draw them at stencil stage
-* after taking a long nature walk today...
-	- upgrading basic settlements and temples -> other structures, usually more specialized
-	  - temple (plain line only)-> stone temple (plain + weak stone line) -> great stone temple (strong stone line, no plain line?)
-	- need special lines/structures to reveal special resources? e.g. magnetic lines reveal iron (mining = pure guesswork, otherwise)
-	- different kinds of temples make different kinds of leylines (wood, stone, food, etc)
-	  - "great" temples, too (aligned and unaligned), that only link with each other & have powerful effects
-		- food temples should be called harvest temples ;)
-  - maybe play as different ancient cultures with different bonuses? (druids = cheaper wood temples, vikings = good at sailing, etc)
-- structures can only become temples if they're near other N (3?) other structures?
-  - and great temples have to be on N leylines? 3?
-- maybe monument is just a kind of temple?
-- terraforming?? definitely a "stretch goal", but would be cool. dams make rivers, ores get depleted, forests get cut down...
-- rivers? walk downhill to ocean from high elevation?
-
-TODO, generally
-- actual good UI in a sidebar
-- proper terrain generation (we're getting there)
-- drag-and-drop for structure building? normal clicking should be for moving the map, at least (i.e. dragging around)
-- buttons for zooming in/out on the map. maybe 4x little previews (just versions of the world canvas at different scales? :))
-- enlarged + griddy map (scaled canvas, should be easy) (getting there. need to separate structures+lines from terrain+fog)
-- map scrolling in a limited window
-- [ability to] preview lines & structures before placing
-- on-hover effects for lines & structures
-- store local resource-related properties within structures at time of building
-- make type-in-table implementation pattern more consistent. it's ok to reference one table from another! probably!
-- similarly, make color implementation patterns more consistent. i forgot that setColor() can take a table {1,2,3,4}, which sure seems more efficient than {r=1, g=2, b=3, a=4}
-- art.
-- sound?
-- warning for users on machines that can't handle multicanvases (i'm using 3 at once so far)
-- better-looking fog?
-- maybe dedupe leylines. could be hard but would decrease exploitation
-- view culling
-  - store visibility state in structures/lines; update whenever view or zoom changes
-  - lines: always visible as long as both endpoints aren't off the same side of the viewport
-	- structures: always visible if inside viewport (with some tolerance)
-- probably limit structures' leyline bonuses. cap at 3 or something? will be very hard to balance otherwise
-- click-and-drag to move map
-	
 BUGS (TODO)
 - vision circle is not consistently shaped. why?
 - leylines look choppy
 - zooming always recenters the map (not good)
 
-cultural effects, if doing...
+TODO, generally, and in order
+- [ability to] preview lines & structures before placing
+- on-hover effects for lines & structures
+- store local resource-related properties within structures at time of building -> structures actually gather LOCAL resources
+- ability to upgrade structures
+- basic sound? building, upgrading
+- actual good UI in a sidebar
+- try adding culture effects
+- click-and-drag to move map
+- drag-and-drop for structure building? modes? (normal clicking should be for moving the map, at least (i.e. dragging around))
+- more zoom levels
+- buttons for zooming in/out on the map. maybe 4x little previews (just versions of the world canvas at different scales? :))
+- view culling
+  - store visibility state in structures/lines; update whenever view or zoom changes
+  - lines: always visible as long as both endpoints aren't off the same side of the viewport
+	- structures: always visible if inside viewport (with some tolerance)
+- probably limit structures' leyline bonuses. cap at 3 or something? will be very hard to balance otherwise
+- game intro/info/credits, etc
+- add more cultures & unlock mechanics (i.e. player only has access to some)
+- lots of balancing!
+- more sophisticated terrain generation
+  - iron veins?
+  - rivers?
+- (cleanup) make type-in-table implementation pattern more consistent. each structure should just contain its structureInfo
+  - it's ok to reference one table from another! probably!
+- (cleanup) similarly, make color implementation patterns more consistent.
+  - i forgot that setColor() can take a table {1,2,3,4}, which sure seems more efficient than {r=1, g=2, b=3, a=4}
+- art.
+- warning for users on machines that can't handle multicanvases (i'm using 3 at once so far)
+- better-looking fog?
+? maybe dedupe leylines. could be hard but would decrease exploitation
+
+cultural effects brainstorm
 - inuit: good in water; bad on land
   - wait, inuit might be ancient but they aren't extinct. might be odd
 - vikings: great at exploring on water; need more food?
@@ -97,11 +69,35 @@ cultural effects, if doing...
   - maybe start by googling "ancient civilizations"
 * temples and stuff should have different graphics for different cultures! :)
 
-FROM A LOST TIMELINE OF MAP.LUA, LAST SEEN 9/26
---this is actually terrible. you need to start over, because you totally ruined this drawing/scaling code. what to do instead, next time:
-       --draw terrain/worldCanvas as you are. it's working fine. do implement that "window" code, soon, though. maybe first.
-       --draw stuffCanvas (structures and lines) at 1x scale. just do location math in the draw step using worldCanvas/Scale/X/Y, and DON'T scale the images, lines, or canv
-         --ONLY WHEN TERRAIN IS AT 16x SCALE
-       --for now, just don't draw structures and lines at other scale factors. i don't think that'll be too hard to figure out later, you'll just need separate functions
-       --the key is to never scale stuffCanvas. always draw s&l at 1x, and do the location math somewhere
-               --maybe do some culling of structures outside the "window"... oh yeah, the window. maybe you should have implemented that first. less mess later, eh?
+original structure ideas:
+temple: every pair makes a leyline. cost increases quickly. only gathers local resources when built? or when clicked?
+village: slowly gathers local resources. cost increases slowly. leyline effect = slightly faster gathering
+quarry: gathers stone from red areas. medium cost increase. leyline effect = faster gathering
+mill: gathers wood from green areas. medium cost increase. leyline effect = faster gathering, also produces food?
+farm: gathers food from blue areas. medium cost increase. leyline effect = faster gathering, also produces wood and stone?
+tower: reveals terrain, slowly gathers local resources. medium cost increase. leyline effect = sees much further
+monument: cost increases quickly. leyline effect = lengthens leyline! TODO actually see if this works
+signpost: cost increases quickly. leyline effect = turns water under leyline into land (like a bridge)
+green -> wood, red -> stone, blue -> food (water and fish)?
+are people a resource, too? or just abstracted to food?
+
+other ideas:
+- different structure "blueprints" have to be discovered. just uncover the terrain & click to acquire or something
+- scrying for rare/unique items: send out 5 evently spaced lines; something good is on one of those lines; can use multiples to triangulate to distant points (but not perfectly)
+- large temples for uniting distant areas, i.e. regular temples' leylines have a length limit, but better ones can link farther
+- elevation increases vision for any structure. mountaintops are ideal.
+  - maybe looking uphill is also harder? could be a lot harder to do if tall mountains block your view or something, though...
+	- maybe use terrain noise to generate and store these shapes (not just circles) separately + draw them at stencil stage
+* after taking a long nature walk today...
+	- upgrading basic settlements and temples -> other structures, usually more specialized
+	  - temple (plain line only)-> stone temple (plain + weak stone line) -> great stone temple (strong stone line, no plain line?)
+	- need special lines/structures to reveal special resources? e.g. magnetic lines reveal iron (mining = pure guesswork, otherwise)
+	- different kinds of temples make different kinds of leylines (wood, stone, food, etc)
+	  - "great" temples, too (aligned and unaligned), that only link with each other & have powerful effects
+		- food temples should be called harvest temples ;)
+  - maybe play as different ancient cultures with different bonuses? (druids = cheaper wood temples, vikings = good at sailing, etc)
+- structures can only become temples if they're near other N (3?) other structures?
+  - and great temples have to be on N leylines? 3?
+- maybe monument is just a kind of temple?
+- terraforming?? definitely a "stretch goal", but would be cool. dams make rivers, ores get depleted, forests get cut down...
+- rivers? walk downhill to ocean from high elevation?
