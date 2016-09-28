@@ -28,6 +28,11 @@ other ideas:
 	  - "great" temples, too (aligned and unaligned), that only link with each other & have powerful effects
 		- food temples should be called harvest temples ;)
   - maybe play as different ancient cultures with different bonuses? (druids = cheaper wood temples, vikings = good at sailing, etc)
+- structures can only become temples if they're near other N (3?) other structures?
+  - and great temples have to be on N leylines? 3?
+- maybe monument is just a kind of temple?
+- terraforming?? definitely a "stretch goal", but would be cool. dams make rivers, ores get depleted, forests get cut down...
+- rivers? walk downhill to ocean from high elevation?
 
 TODO, generally
 - actual good UI in a sidebar
@@ -45,6 +50,11 @@ TODO, generally
 - sound?
 - warning for users on machines that can't handle multicanvases (i'm using 3 at once so far)
 - better-looking fog?
+- maybe dedupe leylines. could be hard but would decrease exploitation
+- view culling
+  - store visibility state in structures/lines; update whenever view or zoom changes
+  - lines: always visible as long as both endpoints aren't off the same side of the viewport
+	- structures: always visible if inside viewport (with some tolerance)
 
 cultural effects, if doing...
 - inuit: good in water; bad on land
@@ -57,8 +67,29 @@ cultural effects, if doing...
 - mayan/incan/aztec
 - navaho/iroquois/apache/ainu/others?
 - unlockable: martian, lemurian, narnian?, elven?, ysian?
-- someone whose leylines are just longer
+- some culture: ...
+  - leylines are naturally longer
+	- monuments are cheaper
+	- less-strict prerequisites for temple/great temple building (maybe tradeoffs)
+	- get more resources back when a structure is destroyed
+	- better at finding iron
+	- towers see much further
+	- consume food more slowly
+	- can build on water
+	- sructures can be moved?
+	- structures wander randomly? or can be upgraded to wander?
+	- no access to [structure type]
+	  * OR all cultures have different structure-upgrade trees, with different costs and such
 - someone who makes ley-circles between triplets of temples, not lines between pairs (hard! but cool and different!)
 * no idea for most of these. looks like you'll have to do some research!
   - maybe start by googling "ancient civilizations"
 * temples and stuff should have different graphics for different cultures! :)
+
+FROM A LOST TIMELINE OF MAP.LUA, LAST SEEN 9/26
+--this is actually terrible. you need to start over, because you totally ruined this drawing/scaling code. what to do instead, next time:
+       --draw terrain/worldCanvas as you are. it's working fine. do implement that "window" code, soon, though. maybe first.
+       --draw stuffCanvas (structures and lines) at 1x scale. just do location math in the draw step using worldCanvas/Scale/X/Y, and DON'T scale the images, lines, or canv
+         --ONLY WHEN TERRAIN IS AT 16x SCALE
+       --for now, just don't draw structures and lines at other scale factors. i don't think that'll be too hard to figure out later, you'll just need separate functions
+       --the key is to never scale stuffCanvas. always draw s&l at 1x, and do the location math somewhere
+               --maybe do some culling of structures outside the "window"... oh yeah, the window. maybe you should have implemented that first. less mess later, eh?

@@ -29,6 +29,10 @@ function love.load()
 	-- 	print(k, v)
 	-- end
 	
+	love.keyboard.setKeyRepeat(true)
+	
+	scrollSpeed = 2
+	
 	--debug
 	fpsCounter = 0
 	frameCounter = 0
@@ -86,6 +90,17 @@ function love.keypressed(key)
 			calculateLeylinePower()
 		end
 	end
+	
+	if key == "left" then
+		--this works, but move to a different function, probably in map.lua TODO
+		worldContainer.x = worldContainer.x + worldContainer.scale * scrollSpeed
+	elseif key == "right" then
+		worldContainer.x = worldContainer.x - worldContainer.scale * scrollSpeed
+	elseif key == "up" then
+		worldContainer.y = worldContainer.y + worldContainer.scale * scrollSpeed
+	elseif key == "down" then
+		worldContainer.y = worldContainer.y - worldContainer.scale * scrollSpeed
+	end
 end
 
 function love.draw()
@@ -94,7 +109,4 @@ function love.draw()
 	
 	--draw buttons, resource tickers, and other game info
 	drawHUD()
-	
-	--canvas drawing 
-	--TODO move to drawMap, i guess?
 end

@@ -1,8 +1,9 @@
 --map.lua: most code to do with stencils, canvases, and drawing the map lives here
 
 function initMap()
-	mapCanvasWidth, mapCanvasHeight = 720, 720 --TODO these need to be not-global (i think)
-	love.window.setMode(mapCanvasWidth, mapCanvasHeight)
+	mapCanvasWidth, mapCanvasHeight = 640, 640 --TODO these need to be not-global (i think)
+	love.window.setMode(mapCanvasWidth, mapCanvasHeight) --TODO and this should not go in map.lua :[
+	love.window.setTitle("Leylines v0.1")
 		
 	--worldCanvas = for drawing terrain and fog of war
 	--yes, terrain is also on its own canvas, but it's drawn to the world canvas
@@ -10,7 +11,7 @@ function initMap()
 	worldContainer.canvas = love.graphics.newCanvas(mapCanvasWidth, mapCanvasHeight)
 	worldContainer.canvas:setFilter('linear', 'nearest', 0)
 	
-	worldContainer.scale = 16
+	worldContainer.scale = 16 --TODO maybe just change this back to worldScale or something
 	
 	--stuffCanvas = for drawing structures and leylines
 	stuffContainer = {} --TODO this name... yeah. :/
@@ -25,6 +26,12 @@ function initMap()
 	--constants
 	minNeighborDistance = 4
 	lineTouchTolerance = 2
+	
+	--viewport stuff. 
+	--viewX and viewY are the top left corner of the viewport
+	-- viewX = mapCanvasWidth / 2 - mapCanvasWidth / (worldContainer.scale * 2)
+	-- viewY = mapCanvasHeight / 2 - mapCanvasHeight / (worldContainer.scale * 2)
+	--or... a table called visibleRange with top left x+y and ranges
 end
 
 
