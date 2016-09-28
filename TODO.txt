@@ -2,16 +2,23 @@ BUGS (TODO)
 - vision circle is not consistently shaped. why?
 - leylines look choppy
 - zooming always recenters the map (not good)
+- starting temple should never be in water! then again, there should probably never be a starting temple
 
 TODO, generally, and in order
 - [ability to] preview lines & structures before placing
-- on-hover effects for lines & structures
+- on-hover effects for lines & structures (just names, i guess? maybe only structures for now?)
+- right-clicking: building structures in empty space + structure stats & options (this is how you upgrade structures!)
 - store local resource-related properties within structures at time of building -> structures actually gather LOCAL resources
 - ability to upgrade structures
+- actually make structures that lengthen lines
+- make line-vision look a little nicer by putting circles on the enpoints
 - basic sound? building, upgrading
 - actual good UI in a sidebar
+- prevent building on water
+- make food a resource that depletes over time. should be pretty easy to get, though
 - try adding culture effects
-- click-and-drag to move map
+- saving & loading. can player have multiple saves? maybe load button = preview of map? save little graphics?
+- click-and-drag to move map (left-click)
 - drag-and-drop for structure building? modes? (normal clicking should be for moving the map, at least (i.e. dragging around))
 - more zoom levels
 - buttons for zooming in/out on the map. maybe 4x little previews (just versions of the world canvas at different scales? :))
@@ -30,7 +37,7 @@ TODO, generally, and in order
   - it's ok to reference one table from another! probably!
 - (cleanup) similarly, make color implementation patterns more consistent.
   - i forgot that setColor() can take a table {1,2,3,4}, which sure seems more efficient than {r=1, g=2, b=3, a=4}
-- art.
+- more/better art, esp. for different cultures
 - warning for users on machines that can't handle multicanvases (i'm using 3 at once so far)
 - better-looking fog?
 ? maybe dedupe leylines. could be hard but would decrease exploitation
@@ -64,6 +71,7 @@ cultural effects brainstorm
 	- no access to [structure type]
 	  * OR all cultures have different structure-upgrade trees, with different costs and such
 	- higher leyline bonus cap on structures (4?)
+	- better at storing [resource type] or all resources
 - someone who makes ley-circles between triplets of temples, not lines between pairs (hard! but cool and different!)
 * no idea for most of these. looks like you'll have to do some research!
   - maybe start by googling "ancient civilizations"
@@ -101,3 +109,13 @@ other ideas:
 - maybe monument is just a kind of temple?
 - terraforming?? definitely a "stretch goal", but would be cool. dams make rivers, ores get depleted, forests get cut down...
 - rivers? walk downhill to ocean from high elevation?
+- optional buildings/constructions? villages can HAVE towers and monuments, you don't turn a village INTO a tower or a monument
+  * or just don't make village a type of structure. keep them all small, like camp, and maybe house
+	  - basic leyline structure could be altar or something. temples are bigger than that
+- story premise: a <beast> came into your <lodge> and killed your <chiefs> while you hid nearby -> now have to survive and rebuild
+  - <lodge> becomes a Ruin (≈ Temple), your starting structure. links with temples and such, provides initial resource gains
+  - can maybe find other Ruins around world? would definitely need to 
+	- goal of game is to kill <beast>?? need to build a <culture-specific weapon> to do it??? gather parts around world????
+	- kind of changing the tone here, but it could work...
+* maybe storage facilities are needed to retain resources, up to a maximum? i like this idea! stone piles, wood piles, granaries...
+  - but should they have to be near facilities that fill them? i think that's not necessary...
