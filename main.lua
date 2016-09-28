@@ -93,13 +93,19 @@ function love.keypressed(key)
 	
 	if key == "left" then
 		--this works, but move to a different function, probably in map.lua TODO
-		worldContainer.x = worldContainer.x + worldContainer.scale * scrollSpeed
+		worldContainer.x = worldContainer.x + mapScale * scrollSpeed
 	elseif key == "right" then
-		worldContainer.x = worldContainer.x - worldContainer.scale * scrollSpeed
+		worldContainer.x = worldContainer.x - mapScale * scrollSpeed
 	elseif key == "up" then
-		worldContainer.y = worldContainer.y + worldContainer.scale * scrollSpeed
+		worldContainer.y = worldContainer.y + mapScale * scrollSpeed
 	elseif key == "down" then
-		worldContainer.y = worldContainer.y - worldContainer.scale * scrollSpeed
+		worldContainer.y = worldContainer.y - mapScale * scrollSpeed
+	end
+	
+	if key == "-" then
+		zoomOut()
+	elseif key == "=" then
+		zoomIn()
 	end
 end
 

@@ -55,6 +55,9 @@ TODO, generally
   - store visibility state in structures/lines; update whenever view or zoom changes
   - lines: always visible as long as both endpoints aren't off the same side of the viewport
 	- structures: always visible if inside viewport (with some tolerance)
+	
+BUGS
+- vision circle is not consistently shaped. why?
 
 cultural effects, if doing...
 - inuit: good in water; bad on land
@@ -74,8 +77,12 @@ cultural effects, if doing...
 	- get more resources back when a structure is destroyed
 	- better at finding iron
 	- towers see much further
+	  - or towers always treated as being at max elevation? at if they were flying?
 	- consume food more slowly
 	- can build on water
+	  - good for Ys, maybe
+	  - just shallow water, or any water?
+	  - can ONLY build on water?
 	- sructures can be moved?
 	- structures wander randomly? or can be upgraded to wander?
 	- no access to [structure type]

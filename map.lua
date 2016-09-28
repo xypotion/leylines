@@ -11,14 +11,14 @@ function initMap()
 	worldContainer.canvas = love.graphics.newCanvas(mapCanvasWidth, mapCanvasHeight)
 	worldContainer.canvas:setFilter('linear', 'nearest', 0)
 	
-	worldContainer.scale = 16 --TODO maybe just change this back to worldScale or something
+	mapScale = 16 --TODO maybe just change this back to worldScale or something
 	
 	--stuffCanvas = for drawing structures and leylines
 	stuffContainer = {} --TODO this name... yeah. :/
 	stuffContainer.canvas = love.graphics.newCanvas(mapCanvasWidth, mapCanvasHeight) --TODO probably not right? maybe have own versions?
 	stuffContainer.canvas:setFilter('linear', 'nearest', 0)
 	
-	stuffContainer.scale = worldContainer.scale / 16 --the trick is actually to change the points' distributions, not to scale the draw TODO
+	stuffContainer.scale = mapScale / 16 --the trick is actually to change the points' distributions, not to scale the draw TODO
 	
 	--should be called whenever canvas is zoomed or scrolled (i guess?)
 	setWorldAndStuffCanvasLocation()
@@ -29,24 +29,34 @@ function initMap()
 	
 	--viewport stuff. 
 	--viewX and viewY are the top left corner of the viewport
-	-- viewX = mapCanvasWidth / 2 - mapCanvasWidth / (worldContainer.scale * 2)
-	-- viewY = mapCanvasHeight / 2 - mapCanvasHeight / (worldContainer.scale * 2)
+	-- viewX = mapCanvasWidth / 2 - mapCanvasWidth / (mapScale * 2)
+	-- viewY = mapCanvasHeight / 2 - mapCanvasHeight / (mapScale * 2)
 	--or... a table called visibleRange with top left x+y and ranges
+end
+
+function zoomOut()
+	mapScale = 4
+	setWorldAndStuffCanvasLocation()
+end
+
+function zoomIn()
+	mapScale = 16
+	setWorldAndStuffCanvasLocation()
 end
 
 
 ------------move us
 function setWorldAndStuffCanvasLocation()
-	worldContainer.x = mapCanvasWidth / 2 - mapCanvasWidth * worldContainer.scale / 2
-	worldContainer.y = mapCanvasHeight / 2 - mapCanvasHeight * worldContainer.scale / 2
+	worldContainer.x = mapCanvasWidth / 2 - mapCanvasWidth * mapScale / 2
+	worldContainer.y = mapCanvasHeight / 2 - mapCanvasHeight * mapScale / 2
 	
 	stuffContainer.x, stuffContainer.y = 0,0--worldContainer.x, worldContainer.y --TODO chanto shinasai!
 end
 
 function getWorldCanvasMouseCoordinates()--mx, my)
 	local mx, my = love.mouse.getPosition()
-	local worldX = math.floor(mx / worldContainer.scale - worldContainer.x / worldContainer.scale)
-	local worldY = math.floor(my / worldContainer.scale - worldContainer.y / worldContainer.scale)
+	local worldX = math.floor(mx / mapScale - worldContainer.x / mapScale)
+	local worldY = math.floor(my / mapScale - worldContainer.y / mapScale)
 	
 	return worldX, worldY
 end
@@ -142,7 +152,7 @@ function drawMap()
 	love.graphics.setColor(255, 255, 255)
 	love.graphics.setCanvas()
 	
-	love.graphics.draw(worldContainer.canvas, worldContainer.x, worldContainer.y, 0, worldContainer.scale)
+	love.graphics.draw(worldContainer.canvas, worldContainer.x, worldContainer.y, 0, mapScale)
 	
 	love.graphics.draw(stuffContainer.canvas, stuffContainer.x, stuffContainer.y, 0, stuffContainer.scale)
 end
@@ -196,7 +206,7 @@ function drawLeylines()
 	love.graphics.setLineWidth(1)
 	for i = 1, #lines do
 		love.graphics.setColor(lines[i].color)
-		love.graphics.line(lines[i].x1 * 16 + worldContainer.x, lines[i].y1 * 16 + worldContainer.y, lines[i].x2 * 16 + worldContainer.x, lines[i].y2 * 16 + worldContainer.y)
+		love.graphics.line(lines[i].x1 * mapScale + worldContainer.x, lines[i].y1 * mapScale + worldContainer.y, lines[i].x2 * mapScale + worldContainer.x, lines[i].y2 * mapScale + worldContainer.y)
 	end
 end
 	
@@ -205,6 +215,6 @@ function drawStructures()
 	for k, s in pairs(structures) do
 		love.graphics.setColor(structureInfo[s.type].r, structureInfo[s.type].g + s.numLines * 32, structureInfo[s.type].b, 255)
 		-- love.graphics.circle("fill", s.x, s.y, structureInfo[s.type].size)
-		love.graphics.draw(templeImg, s.x * 16 + worldContainer.x - 16, s.y * 16 + worldContainer.y - 16)
+		love.graphics.draw(temple32, s.x * mapScale + worldContainer.x - mapScale, s.y * mapScale + worldContainer.y - mapScale)
 	end
 end
