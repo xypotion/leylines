@@ -75,7 +75,8 @@ function buildA(type, x, y)
 			y = y, 
 			vision = 0, 
 			targetVision = structureInfo[type].vision,
-			numLines = 0
+			numLines = 0,
+			img = structureInfo[type].img
 			-- production = structureInfo[type].production --maybe not that simple... gotta clone, not just ref. good TODO for performance, anyway
 		})
 		

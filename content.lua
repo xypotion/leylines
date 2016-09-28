@@ -4,7 +4,7 @@ function loadStructureInfo()
 			r = 255, g = 127, b = 31, 
 			size = 1, vision = 6, 
 			cost = {Wood = 5}, production = {Stone = 1, Wood = 1}, 
-			costIncrease = 1.2
+			costIncrease = 1.2,
 			},
 		Temple = {
 			r = 255, g = 255, b = 255, 
@@ -31,6 +31,13 @@ function loadStructureInfo()
 			costIncrease = 1.6
 			},
 	}
+	
+	--kinda debug
+	for i, s in pairs(structureInfo) do
+		structureInfo[i].img = {}
+		structureInfo[i].img[4] = temple8
+		structureInfo[i].img[16] = temple32
+	end
 end
 
 function loadLandInfo()

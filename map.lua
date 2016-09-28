@@ -215,6 +215,6 @@ function drawStructures()
 	for k, s in pairs(structures) do
 		love.graphics.setColor(structureInfo[s.type].r, structureInfo[s.type].g + s.numLines * 32, structureInfo[s.type].b, 255)
 		-- love.graphics.circle("fill", s.x, s.y, structureInfo[s.type].size)
-		love.graphics.draw(temple32, s.x * mapScale + worldContainer.x - mapScale, s.y * mapScale + worldContainer.y - mapScale)
+		love.graphics.draw(s.img[mapScale], s.x * mapScale + worldContainer.x - mapScale, s.y * mapScale + worldContainer.y - mapScale)
 	end
 end

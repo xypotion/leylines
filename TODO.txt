@@ -55,9 +55,13 @@ TODO, generally
   - store visibility state in structures/lines; update whenever view or zoom changes
   - lines: always visible as long as both endpoints aren't off the same side of the viewport
 	- structures: always visible if inside viewport (with some tolerance)
+- probably limit structures' leyline bonuses. cap at 3 or something? will be very hard to balance otherwise
+- click-and-drag to move map
 	
-BUGS
+BUGS (TODO)
 - vision circle is not consistently shaped. why?
+- leylines look choppy
+- zooming always recenters the map (not good)
 
 cultural effects, if doing...
 - inuit: good in water; bad on land
@@ -87,6 +91,7 @@ cultural effects, if doing...
 	- structures wander randomly? or can be upgraded to wander?
 	- no access to [structure type]
 	  * OR all cultures have different structure-upgrade trees, with different costs and such
+	- higher leyline bonus cap on structures (4?)
 - someone who makes ley-circles between triplets of temples, not lines between pairs (hard! but cool and different!)
 * no idea for most of these. looks like you'll have to do some research!
   - maybe start by googling "ancient civilizations"
