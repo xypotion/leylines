@@ -14,6 +14,8 @@ TODO, generally, and in order
 - make line-vision look a little nicer by putting circles on the enpoints
 - basic sound? building, upgrading
 - actual good UI in a sidebar
+- hide mouse pointer when cursor is over map (show when on sidebar)
+  - or make a little 4-directional arrow appear [when clicking & dragging?]
 - prevent building on water
 - make food a resource that depletes over time. should be pretty easy to get, though
 - try adding culture effects
@@ -38,6 +40,7 @@ TODO, generally, and in order
 - (cleanup) similarly, make color implementation patterns more consistent.
   - i forgot that setColor() can take a table {1,2,3,4}, which sure seems more efficient than {r=1, g=2, b=3, a=4}
 - more/better art, esp. for different cultures
+  - structures should not go from border to border
 - warning for users on machines that can't handle multicanvases (i'm using 3 at once so far)
 - better-looking fog?
 ? maybe dedupe leylines. could be hard but would decrease exploitation

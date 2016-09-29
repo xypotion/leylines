@@ -55,8 +55,8 @@ end
 
 function getWorldCanvasMouseCoordinates()--mx, my)
 	local mx, my = love.mouse.getPosition()
-	local worldX = math.floor(mx / mapScale - worldContainer.x / mapScale)
-	local worldY = math.floor(my / mapScale - worldContainer.y / mapScale)
+	local worldX = math.floor(mx / mapScale - worldContainer.x / mapScale + 1)
+	local worldY = math.floor(my / mapScale - worldContainer.y / mapScale + 1)
 	
 	return worldX, worldY
 end
@@ -144,12 +144,18 @@ function drawMap()
 
 	drawStructures()
 	
+	--debug; just putting here until TODO it gets its own place
+	love.graphics.setColor(255, 255, 255, 255)
+	love.graphics.rectangle("line", 
+	math.floor(mouseX/mapScale)*mapScale, 
+	math.floor(mouseY/mapScale)*mapScale, 
+	mapScale * 2, mapScale * 2)
+	
 	--mouse-linked line
 	-- love.graphics.line(points[#points].x, points[#points].y, mouseX, mouseY)
 	-- love.graphics.line(newLine.x1, newLine.y1, newLine.x2, newLine.y2)
 	
 	--actually draw the terrain, then the stuff)
-	love.graphics.setColor(255, 255, 255)
 	love.graphics.setCanvas()
 	
 	love.graphics.draw(worldContainer.canvas, worldContainer.x, worldContainer.y, 0, mapScale)

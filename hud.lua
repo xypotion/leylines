@@ -1,3 +1,5 @@
+--this should ONLY be for the sidebar. code for hover/click effects on the map CAN go here, but delineate clearly
+
 function initHUD()
 	--make buttons TODO generate dynamically from structure info
 	buttons = {

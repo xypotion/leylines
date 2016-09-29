@@ -11,6 +11,7 @@ function love.load()
 
 	seed = os.time() % 2 ^ 16
 	math.randomseed(seed)
+	print("seed: "..seed)
 	
 	initMap()
 	
