@@ -62,6 +62,7 @@ end
 
 --actually add that structure
 function buildA(type, x, y)
+	print("building at", x, y)
 	if structureInfo[type] then
 		--deduct cost
 		for resource, amount in pairs(structureInfo[type].cost) do

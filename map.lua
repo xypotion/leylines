@@ -44,6 +44,18 @@ function zoomIn()
 	setWorldAndStuffCanvasLocation()
 end
 
+--TODO: THESE. they're still kinda nascent but will be immensely useful
+function getScreenPosFromMapPos(mapX, mapY)
+	return screenX, screenY
+end
+function getScreenPosFromMapPos(screenX, screenY)
+	-- return mapX, mapY
+	local mapX = math.floor(screenX / mapScale - worldContainer.x / mapScale + 1)
+	local mapY = math.floor(screenY / mapScale - worldContainer.y / mapScale + 1)
+	
+	return mapX, mapY
+end
+
 
 ------------move us
 function setWorldAndStuffCanvasLocation()
@@ -146,10 +158,16 @@ function drawMap()
 	
 	--debug; just putting here until TODO it gets its own place
 	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.rectangle("line", 
-	math.floor(mouseX/mapScale)*mapScale, 
-	math.floor(mouseY/mapScale)*mapScale, 
-	mapScale * 2, mapScale * 2)
+	if drawCursorBox then
+		love.graphics.rectangle("line", 
+		math.floor(mouseX/mapScale)*mapScale, 
+		math.floor(mouseY/mapScale)*mapScale, 
+		mapScale * 2, mapScale * 2)
+	end
+	if hoveredStructure then
+		love.graphics.print(hoveredStructure.type, hoveredStructure.x - mapScale, hoveredStructure.y - mapScale * 2)
+		-- ...another funny bug related to zoom levels. you know what would be really helpful? (big TODO) something like getScreenPosFromMapPos(x, y)
+	end
 	
 	--mouse-linked line
 	-- love.graphics.line(points[#points].x, points[#points].y, mouseX, mouseY)

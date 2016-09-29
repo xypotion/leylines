@@ -22,6 +22,8 @@ function love.load()
 	
 	initHUD()
 	buildMode = "Tower" --debug
+	drawCursorBox = true --debug
+	hoveredStructure = nil
 	
 	startGame()
 
@@ -45,6 +47,18 @@ function love.update(dt)
 	mouseX, mouseY = love.mouse.getPosition()
 	hoveredButtonType = mouseOnButton(mouseX, mouseY)
 	if hoveredButtonType then updateToolTip(hoveredButtonType) end
+	
+	--TODO move to another function?
+	mapMouseX, mapMouseY = getWorldCanvasMouseCoordinates()
+	drawCursorBox = true
+	hoveredStructure = nil
+	for i, s in pairs(structures) do
+		if (mapMouseX == s.x or mapMouseX == s.x + 1) and (mapMouseY == s.y or mapMouseY == s.y + 1) then
+			-- print(s.type)
+			drawCursorBox = false
+			hoveredStructure = s
+		end
+	end
 	
 	--ticks up by dt and produces resources when productionTimer hits 1s
 	resourceTimer(dt)
@@ -71,8 +85,7 @@ function love.mousepressed(x, y)
 		buildMode = hoveredButtonType
 	else
 		if structureInfo[buildMode] then
-			local mx, my = getWorldCanvasMouseCoordinates()
-			tryToBuildA(buildMode, mx, my)
+			tryToBuildA(buildMode, mapMouseX, mapMouseY)
 		end
 	end	
 end
