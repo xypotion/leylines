@@ -14,6 +14,12 @@ function initHUD()
 	errorMsg = ""
 	toolTip = ""
 	
+	--canvas stuff
+	hudWidth = 320
+	hudHeight = mapCanvasHeight
+	hudCanvas = love.graphics.newCanvas(hudWidth, hudHeight)
+	
+	
 	--make other HUD elements... TODO
 end
 
@@ -22,6 +28,14 @@ function updateHUD()
 end
 
 function drawHUD()
+	--canvas setup
+	love.graphics.setCanvas(hudCanvas)
+	love.graphics.clear()
+	
+	--background
+	love.graphics.setColor(0,0,0)
+	love.graphics.rectangle("fill", 0, 0, hudWidth, hudHeight)
+	
 	--buttons
 	for k, b in pairs(buttons) do
 		love.graphics.setColor(255, 255, 255)
@@ -48,11 +62,16 @@ function drawHUD()
 		text = text..resourceRates[resource].."/s"
 		text = text.."\n\n"
 	end
-	love.graphics.printf(text, 0, 10, mapCanvasWidth - 10, "right")
+	love.graphics.printf(text, 10, 300, hudWidth - 10, "left")
 	
 	--error message
 	love.graphics.setColor(255, 191, 191)
-	love.graphics.printf(errorMsg, 0, 10, mapCanvasWidth, "center")
+	love.graphics.printf(errorMsg, 0, 200, hudWidth, "center")
+	
+	--draw HUD canvas
+	love.graphics.setColor(255, 255, 255, 255)
+	love.graphics.setCanvas()
+	love.graphics.draw(hudCanvas)
 end
 
 

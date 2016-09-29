@@ -24,6 +24,9 @@ function love.load()
 	buildMode = "Tower" --debug
 	drawCursorBox = true --debug
 	hoveredStructure = nil
+
+	love.window.setMode(mapCanvasWidth + hudWidth, mapCanvasHeight)
+	love.window.setTitle("Leylines v0.1")
 	
 	startGame()
 

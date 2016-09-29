@@ -1,9 +1,7 @@
 --map.lua: most code to do with stencils, canvases, and drawing the map lives here
 
 function initMap()
-	mapCanvasWidth, mapCanvasHeight = 640, 640 --TODO these need to be not-global (i think)
-	love.window.setMode(mapCanvasWidth, mapCanvasHeight) --TODO and this should not go in map.lua :[
-	love.window.setTitle("Leylines v0.1")
+	mapCanvasWidth, mapCanvasHeight = 640, 640
 		
 	--worldCanvas = for drawing terrain and fog of war
 	--yes, terrain is also on its own canvas, but it's drawn to the world canvas
@@ -68,12 +66,13 @@ function setWorldAndStuffCanvasLocation()
 	stuffContainer.x, stuffContainer.y = 0,0--worldContainer.x, worldContainer.y --TODO chanto shinasai!
 end
 
-function getWorldCanvasMouseCoordinates()--mx, my)
-	local mx, my = love.mouse.getPosition()
-	local worldX = math.floor(mx / mapScale - worldContainer.x / mapScale + 1)
-	local worldY = math.floor(my / mapScale - worldContainer.y / mapScale + 1)
+function getWorldCanvasMouseCoordinates()
+	-- local mx, my = love.mouse.getPosition()
+	-- local worldX = math.floor(mx / mapScale - worldContainer.x / mapScale + 1)
+	-- local worldY = math.floor(my / mapScale - worldContainer.y / mapScale + 1)
+	return getMapPosFromScreenPos(mouseX - hudWidth, mouseY)
 	
-	return worldX, worldY
+	-- return worldX, worldY
 end
 ---------------
 
@@ -160,12 +159,11 @@ function drawMap()
 	drawStructures()
 	
 	--debug; just putting here until TODO it gets its own place
+	--also TODO maybe make more efficient? the division is kind of bad (although i suppose it's only twice per draw at most here)
 	love.graphics.setColor(255, 255, 255, 255)
 	if drawCursorBox then
 		love.graphics.rectangle("line", 
-		math.floor(mouseX/mapScale)*mapScale, 
-		math.floor(mouseY/mapScale)*mapScale, 
-		mapScale * 2, mapScale * 2)
+			math.floor((mouseX - hudWidth)/mapScale)*mapScale, math.floor(mouseY/mapScale)*mapScale, mapScale * 2, mapScale * 2)
 	end
 	
 	if hoveredStructure then
@@ -180,9 +178,9 @@ function drawMap()
 	--actually draw the terrain, then the stuff)
 	love.graphics.setCanvas()
 	
-	love.graphics.draw(worldContainer.canvas, worldContainer.x, worldContainer.y, 0, mapScale)
+	love.graphics.draw(worldContainer.canvas, worldContainer.x + hudWidth, worldContainer.y, 0, mapScale)
 	
-	love.graphics.draw(stuffContainer.canvas, stuffContainer.x, stuffContainer.y, 0, stuffContainer.scale)
+	love.graphics.draw(stuffContainer.canvas, stuffContainer.x + hudWidth, stuffContainer.y, 0, stuffContainer.scale)
 end
 
 function drawFogAndTerrain()

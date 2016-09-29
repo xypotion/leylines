@@ -2,6 +2,7 @@ BUGS (TODO) ! major - average . minor
 ! zooming always recenters the map
 - leylines and hover text look choppy and bad. probably a different draw mode or something can fix that? drop shadows would also be good
 - starting structure should never be in water! needs to find nearest land or something
+- building in the fog is bad. prevent this by looking at all 4 hovered pixels
 . structures' costs don't increase until you build two
 . vision circle is not consistently shaped. why?
 
@@ -115,11 +116,14 @@ Camp: gathers local resources only
 	- forest temple
 	  - great ft
 	~ other kinds of temples, depending on culture
-- cache: stores some of all
-  - storehouse: stores a lot of all, but expensive
-	- granary: stores a lot of food, not that expensive
+- cache: stores some of all (50)
+  - storehouse: stores a lot of all (500), but semi expensive
+	- granary: stores a lot of food (200), not that expensive
+	  - big granary (2000)
 	- wood pile
+	  - big wood pile
 	- stone pile
+	  - big stone pile
 	* iron does not a need a storage structure (i.e. no cap)? or HAS a cap but no designated storage structure (only stored in cache/storehouse)?
 - lookout: longer vision than camp; elevation increases vision
   - tower: much longer vision
