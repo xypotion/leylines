@@ -6,7 +6,11 @@ BUGS (TODO) ! major - average . minor
 . vision circle is not consistently shaped. why?
 
 TODO, generally, and in order
+√ functions that translate positions between map and screen
+- move UI to a sidebar, draw map to the right
 - [ability to] preview lines & structures before placing
+  √ structures
+	- lines
 - on-hover effects for lines & structures (just names, i guess? maybe only structures for now?)
 - right-clicking: building structures in empty space + structure stats & options (this is how you upgrade structures!)
   - i.e. context menus. player can right click, then build, upgrade, or destroy
@@ -16,7 +20,6 @@ TODO, generally, and in order
 - actually make structures that lengthen lines
 - make line-vision look a little nicer by putting circles on the enpoints
 - basic sound? building, upgrading
-- actual good UI in a sidebar
 - hide mouse pointer when cursor is over map (show when on sidebar)
   - or make a little 4-directional arrow appear [when clicking & dragging?]
 - prevent building on water
@@ -63,6 +66,7 @@ cultural effects brainstorm
 - mayan/incan/aztec
 - navaho/iroquois/apache/ainu/others?
 - unlockable: martian, lemurian, narnian?, elven?, ysian?
+- robots: leylines must be horizontal or vertical
 - some culture: ...
   - leylines are naturally longer
 	- monuments are cheaper
@@ -86,6 +90,47 @@ cultural effects brainstorm
 * no idea for most of these. looks like you'll have to do some research!
   - maybe start by googling "ancient civilizations"
 * temples and stuff should have different graphics for different cultures! :)
+
+basic structure tree idea:
+Ruin: starting structure: stores a little, gathers a little
+* not upgradeable + not buildable
+* links with altars? maybe basic temples?
+* anything bigger than a camp can become a Ruin when destroyed, then Ruins can be cleared? or you only ever get the one Ruin?
+Camp: gathers local resources only
+- lodge: same as camp, but slightly faster
+	- mill: gathers wood
+	  - shipyard: explores water? or just unlocks Port?
+	- quarry: gathers stone
+	  - mine: gathers iron
+	- garden: produces food
+	  - farm: produces more food
+	- tower: long vision
+- altar: plain leylines, slow local gathering
+  - sun temple: plain leylines, slow local gathering, a little universal storage
+	  - great sun temple: strong, plain l.l.s, only links with other great s.t.s, some storage; very expensive
+	- harvest temple: food + plain leylines
+	  - great ht: only food leylines (only links with other great h.t.s)
+	- mountain temple
+	  - great mt
+	- forest temple
+	  - great ft
+	~ other kinds of temples, depending on culture
+- cache: stores some of all
+  - storehouse: stores a lot of all, but expensive
+	- granary: stores a lot of food, not that expensive
+	- wood pile
+	- stone pile
+	* iron does not a need a storage structure (i.e. no cap)? or HAS a cap but no designated storage structure (only stored in cache/storehouse)?
+- lookout: longer vision than camp; elevation increases vision
+  - tower: much longer vision
+	- port: very long vision in adjacent bodies of water
+	- oracle: reveals nearest point of interest within a maximum distance
+	- barracks?: usually required to win?
+* stone leylines reveal iron ore (usually in mountains; invisible (but occasionally gatherable) until revealed)
+* wood leylines turn sand into grass? or grass into forests?
+* food leylines... something. forests -> orchards?
+* plain/sun leylines melt snow? meh. universal multiplier might be good enough
+* things that make leylines should state what they make lines WITH
 
 original structure ideas:
 temple: every pair makes a leyline. cost increases quickly. only gathers local resources when built? or when clicked?
@@ -124,8 +169,11 @@ other ideas:
 	  - basic leyline structure could be altar or something. temples are bigger than that
 - story premise: a <beast> came into your <lodge> and killed your <chiefs> while you hid nearby -> now have to survive and rebuild
   - <lodge> becomes a Ruin (≈ Temple), your starting structure. links with temples and such, provides initial resource gains
-  - can maybe find other Ruins around world? would definitely need to 
+  - can maybe find other Ruins around world? (non-trivial to implement) 
 	- goal of game is to kill <beast>?? need to build a <culture-specific weapon> to do it??? gather parts around world????
 	- kind of changing the tone here, but it could work...
 * maybe storage facilities are needed to retain resources, up to a maximum? i like this idea! stone piles, wood piles, granaries...
   - but should they have to be near facilities that fill them? i think that's not necessary...
+- findable special items? appear as "?"s in the fog until then? :/
+  - lodestones, weapon parts, ship parts, ruins
+- should player be scored?

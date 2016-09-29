@@ -44,12 +44,15 @@ function zoomIn()
 	setWorldAndStuffCanvasLocation()
 end
 
---TODO: THESE. they're still kinda nascent but will be immensely useful
 function getScreenPosFromMapPos(mapX, mapY)
+	local screenX = worldContainer.x + mapScale * (mapX - 1)
+	local screenY = worldContainer.y + mapScale * (mapY - 1)
+	
 	return screenX, screenY
 end
-function getScreenPosFromMapPos(screenX, screenY)
-	-- return mapX, mapY
+
+-- since i contain division, try not to call me from draw()
+function getMapPosFromScreenPos(screenX, screenY)
 	local mapX = math.floor(screenX / mapScale - worldContainer.x / mapScale + 1)
 	local mapY = math.floor(screenY / mapScale - worldContainer.y / mapScale + 1)
 	
@@ -164,9 +167,10 @@ function drawMap()
 		math.floor(mouseY/mapScale)*mapScale, 
 		mapScale * 2, mapScale * 2)
 	end
+	
 	if hoveredStructure then
-		love.graphics.print(hoveredStructure.type, hoveredStructure.x - mapScale, hoveredStructure.y - mapScale * 2)
-		-- ...another funny bug related to zoom levels. you know what would be really helpful? (big TODO) something like getScreenPosFromMapPos(x, y)
+		local hx, hy = getScreenPosFromMapPos(hoveredStructure.x, hoveredStructure.y)
+		love.graphics.print(hoveredStructure.type, hx, hy - mapScale)
 	end
 	
 	--mouse-linked line
