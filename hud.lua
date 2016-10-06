@@ -3,11 +3,11 @@
 function initHUD()
 	--make buttons TODO generate dynamically from structure info
 	buttons = {
-		Shack = {x = 10, y = 10, w = 200, h = 20, label = "Shack: 5 Wood"},
-		Temple = {x = 10, y = 35, w = 200, h = 20, label = "Temple: 100 Stone"},
-		Tower = {x = 10, y = 60, w = 200, h = 20, label = "Tower: 20 Stone"},
-		Quarry = {x = 10, y = 85, w = 200, h = 20, label = "Quarry: 10 Stone, 10 Wood"},
-		Mill = {x = 10, y = 110, w = 200, h = 20, label = "Mill: 10 Stone, 10 Wood"},
+		Shack = {x = 10, y = 210, w = 200, h = 20, label = "Shack: 5 Wood"},
+		Temple = {x = 10, y = 235, w = 200, h = 20, label = "Temple: 100 Stone"},
+		Tower = {x = 10, y = 260, w = 200, h = 20, label = "Tower: 20 Stone"}, --this is wrong!
+		Quarry = {x = 10, y = 285, w = 200, h = 20, label = "Quarry: 10 Stone, 10 Wood"},
+		Mill = {x = 10, y = 310, w = 200, h = 20, label = "Mill: 10 Stone, 10 Wood"},
 	}
 	
 	--initialize these things
@@ -62,11 +62,11 @@ function drawHUD()
 		text = text..resourceRates[resource].."/s"
 		text = text.."\n\n"
 	end
-	love.graphics.printf(text, 10, 300, hudWidth - 10, "left")
+	love.graphics.printf(text, 10, 10, hudWidth - 10, "left")
 	
 	--error message
 	love.graphics.setColor(255, 191, 191)
-	love.graphics.printf(errorMsg, 0, 200, hudWidth, "center")
+	love.graphics.printf(errorMsg, 0, 100, hudWidth, "center")
 	
 	--draw HUD canvas
 	love.graphics.setColor(255, 255, 255, 255)

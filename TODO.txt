@@ -8,18 +8,18 @@ BUGS (TODO) ! major - average . minor
 
 TODO, generally, and in order
 √ functions that translate positions between map and screen
-- move UI to a sidebar, draw map to the right
-- [ability to] preview lines & structures before placing
-  √ structures
-	- lines
-- on-hover effects for lines & structures (just names, i guess? maybe only structures for now?)
+√ move UI to a sidebar, draw map to the right
+√ ability to preview structures before placing
+- ability to preview lines before upgrading something to a line-producing structure
+√ on-hover effects for lines & structures (just names, i guess? maybe only structures for now?)
 - right-clicking: building structures in empty space + structure stats & options (this is how you upgrade structures!)
   - i.e. context menus. player can right click, then build, upgrade, or destroy
+	- can actually build off the existing "buttons" framework, i think. circular context menus seem appropriate for an RTS
 - move map view to right-clicked item if too near border? for circular (?) context menu
 - store local resource-related properties within structures at time of building -> structures actually gather LOCAL resources
 - ability to upgrade structures
 - actually make structures that lengthen lines
-- make line-vision look a little nicer by putting circles on the enpoints
+- make line-vision look a little nicer by putting circles on the endpoints
 - basic sound? building, upgrading
 - hide mouse pointer when cursor is over map (show when on sidebar)
   - or make a little 4-directional arrow appear [when clicking & dragging?]
@@ -38,7 +38,10 @@ TODO, generally, and in order
 	- structures: always visible if inside viewport (with some tolerance)
 - probably limit structures' leyline bonuses. cap at 3 or something? will be very hard to balance otherwise
 - settings
-  - player can swap functions of left/right clicks
+  - player can swap functions of left/right clicks (??)
+	- scroll acceleration? eh
+	- double-click speed? ehh
+	- time passage rate (make line/vision growth rate match)
 - map scrolling with mac trackpad? ehhh. would be cool, but i don't know how that's done. is it essentially just a click-and-drag?
 - game intro/info/credits, etc
 - add more cultures & unlock mechanics (i.e. player only has access to some)
@@ -55,6 +58,50 @@ TODO, generally, and in order
 - warning for users on machines that can't handle multicanvases (i'm using 3 at once so far)
 - better-looking fog?
 ? maybe dedupe leylines. could be hard but would decrease exploitation
+
+DRAGGING AND SCROLLING ARE EASY. now what, son
+SO ARE DOUBLE CLICKING AND CHANGING CURSORS
+
+UI brainstorm since you're getting stuck on what to do next
+- sidebar from top to bottom:
+  - logo/title + quick info (culture, maybe day #)
+	- general info
+	  - resources & rates (pos and neg?)
+		- 3 zoom buttons 
+		- settings-gear
+		- ? button for: current culture bonuses, info on land types, how to play
+	- ...OR upgrade buttons for clicked structure
+		- structure image & name
+		- costs: immediate and over time (food)
+		- description
+		- leyline effect & affinity (wood, food, etc)
+		* greyed out if costs not met
+		* scrollable if list too long (relatively easy with scroll wheel/touch; maybe need ^/v buttons for people without those buttons)
+		  - determining total height might be a pain... 
+- map view stuff:
+	- click and drag: move 1-1
+	- scroll: move with a little acceleration
+	- double click on map: zoom in or out (?)
+	  - right click: zoom out?
+- hover on empty land: preview box, maybe terrain type?
+- hover on structure: structure name; 
+  - can-/cannot-upgrade indicator in sidebar?
+	- or full info in sidebar?
+- hover on line: show info?
+- click in empty land WITHOUT MOVING MOUSE: preview structure & lines OR show error message; maybe overlay & prompt?
+  - click preview again: build it!
+	- click elsewhere: cancel
+- click on structure: info & upgrade buttons appear in left rail
+  - click again OR click elswhere: revert sidebar
+- click on line: nothing?
+- hover on enemy: show info & win requirements
+- click on enemy: either attack or show error
+* all computers have right-click capabilities. are you going to take advantage of that or not?
+  - gotta figure out how trackpads and love get along firsts
+- other:
+  - hover on "hungry" or "cold": description of effect & how to reverse
+	
+auto-save? :S
 
 cultural effects brainstorm
 - inuit: good in water; bad on land
