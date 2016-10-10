@@ -87,9 +87,16 @@ function love.mousepressed(x, y)
 		--set build mode
 		buildMode = hoveredButtonType
 	else
-		if structureInfo[buildMode] then
-			tryToBuildA(buildMode, mapMouseX, mapMouseY)
+		if hoveredStructure then
+			clickedStructure = hoveredStructure
+		else
+			clickedStructure = nil
 		end
+			--on its way out TODO
+			if structureInfo[buildMode] then
+				tryToBuildA(buildMode, mapMouseX, mapMouseY)
+			end
+		-- end
 	end	
 end
 

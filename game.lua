@@ -12,6 +12,7 @@ function startGame()
 	lines = {}
 	
 	productionTimer = 0
+	dayNumber = 0
 	
 	generateIsland()
 	
@@ -30,8 +31,10 @@ function resourceTimer(dt)
 		end
 		
 		--produce resources if it's time to
+		--TODO probably needs refactoring
 		if productionTimer >= 1 then
 			produceAllResources(s)
+			dayNumber = dayNumber + 1
 		end
 	end
 	
