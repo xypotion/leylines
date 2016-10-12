@@ -43,15 +43,6 @@ function drawHUD()
 	
 	
 	
-	--TODO this next. make structure info appear in HUD on hover. probably actually put this in clickedStructure's else case?
-	if hoveredStructure then
-		print (hoveredStructure.type)
-		--show structure info (type, production, other effects)
-		--show "upgrades available" or "no upgrades available"
-	end
-	
-	
-	
 	--then everything else. if a structure has been clicked...
 	if clickedStructure then
 		--...show upgrade buttons
@@ -89,9 +80,6 @@ function drawHUD()
 		-- 	love.graphics.print(toolTip, buttons[hoveredButtonType].x + buttons[hoveredButtonType].w + 10, buttons[hoveredButtonType].y)
 		-- end
 	else
-		--...show default HUD info
-		love.graphics.setColor(255, 255, 255)
-	
 		--resources & rates
 		local text = ""
 		for resource, amount in pairs(resources) do
@@ -101,6 +89,24 @@ function drawHUD()
 		end
 		love.graphics.printf(text, 10, 40, hudWidth - 10, "left")
 		
+		--is the player hovering on a structure?
+		if hoveredStructure then
+			--show its info
+			-- print (hoveredStructure.type)
+			--show structure info (type, production, other effects)
+			--show "upgrades available" or "no upgrades available"
+			love.graphics.print(hoveredStructure.type, 20, 190)
+			love.graphics.rectangle("line", 10, 180, 300, 300)
+			love.graphics.print("structure info", 20, 230)
+		else
+			--show terrain info?
+			love.graphics.rectangle("line", 10, 180, 300, 300)
+			love.graphics.print("terrain \nor \nleyline \ninfo", 20, 230)
+			
+			--show default HUD info
+			love.graphics.setColor(255, 255, 255)
+		end
+		
 		--zoom buttons
 		love.graphics.rectangle("line", 10, 500, 90, 90)
 		love.graphics.rectangle("line", 110, 500, 90, 90)
@@ -108,7 +114,7 @@ function drawHUD()
 		love.graphics.print("zoom", 30, 540)
 		love.graphics.print("buttons", 130, 540)
 		love.graphics.print("here", 230, 540)
-		
+	
 		--other buttons
 		love.graphics.rectangle("line", 10, 600, 90, 30)
 		love.graphics.rectangle("line", 110, 600, 90, 30)

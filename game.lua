@@ -2,11 +2,15 @@ function startGame()
 	resources = {
 		Wood = 0,
 		Stone = 50, --debug
+		-- Iron = 0,
+		Food = 0,
 	}
 	
 	resourceRates = {
 		Wood = 0,
-		Stone = 0
+		Stone = 0,
+		-- Iron = 0,
+		Food = 0,
 	}
 	
 	lines = {}
