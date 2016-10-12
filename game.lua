@@ -16,7 +16,7 @@ function startGame()
 	lines = {}
 	
 	productionTimer = 0
-	dayNumber = 0
+	gameTimer = 0
 	
 	generateIsland()
 	
@@ -26,6 +26,7 @@ end
 
 function resourceTimer(dt)
 	productionTimer = productionTimer + dt --TODO rename this. it's only used for resource production
+	gameTimer = gameTimer + dt
 	
 	--for each structure...
 	for k, s in pairs(structures) do
@@ -38,7 +39,6 @@ function resourceTimer(dt)
 		--TODO probably needs refactoring
 		if productionTimer >= 1 then
 			produceAllResources(s)
-			dayNumber = dayNumber + 1
 		end
 	end
 	

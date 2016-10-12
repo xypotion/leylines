@@ -39,7 +39,7 @@ function drawHUD()
 	
 	--header info first; TODO refine
 	love.graphics.setColor(255, 255, 255)
-	love.graphics.print("LEYLINES! TIME: "..dayNumber,5, 5, 0, 2)
+	love.graphics.print("LEYLINES! TIME: "..math.floor(gameTimer),5, 5, 0, 2)
 	
 	
 	
