@@ -52,7 +52,7 @@ function love.load()
 	tolerance = 3
 	
 	structureInfo = {
-		Shack = {r = 255, g = 127, b = 31, size = 4, vision = minDistance * 2, cost = {Wood = 5}, production = {Stone = 1, Wood = 1}, costIncrease = 1.2},
+		Camp = {r = 255, g = 127, b = 31, size = 4, vision = minDistance * 2, cost = {Wood = 5}, production = {Stone = 1, Wood = 1}, costIncrease = 1.2},
 		Temple = {
 			r = 255, g = 255, b = 255, size = 6, vision = minDistance * 3, cost = {Stone = 50}, production = {Stone = 1, Wood = 1}, costIncrease = 2, tip = "Pairs produce Leylines."
 			},
@@ -70,7 +70,7 @@ function love.load()
 	--UI
 	--TODO generate dynamically...
 	buttons = {
-		Shack = {x = 10, y = 10, w = 200, h = 20, label = "Shack: 5 Wood"},
+		Camp = {x = 10, y = 10, w = 200, h = 20, label = "Camp: 5 Wood"},
 		Temple = {x = 10, y = 35, w = 200, h = 20, label = "Temple: 100 Stone"},
 		Tower = {x = 10, y = 60, w = 200, h = 20, label = "Tower: 20 Stone"},
 		Quarry = {x = 10, y = 85, w = 200, h = 20, label = "Quarry: 10 Stone, 10 Wood"},
@@ -103,7 +103,7 @@ function love.load()
 	
 	--testing lines...
 	-- for i = 1, 100 do
-		-- buildA("Shack", (canvasWidth / 3) + (i / 10) * 20, (canvasHeight / 3) + (i % 10) * 20)
+		-- buildA("Camp", (canvasWidth / 3) + (i / 10) * 20, (canvasHeight / 3) + (i % 10) * 20)
 	-- end
 	-- buildA("Temple", canvasWidth / 3, canvasHeight / 3)
 	
@@ -508,7 +508,7 @@ function applyLeylinePower()
 	for i, s in pairs(structures) do
 		if s.type == "Tower" then
 			structures[i].targetVision = minDistance * (6 + 3 * s.numLines)
-		-- elseif s.type == "Shack" then
+		-- elseif s.type == "Camp" then
 		-- 	structures[i].targetVision = minDistance * (4 + 2 * s.numLines)
 		end
 	end

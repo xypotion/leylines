@@ -3,7 +3,7 @@
 function initHUD()
 	--make buttons TODO generate dynamically from structure info
 	buttons = {
-		Shack = {x = 10, y = 210, w = 200, h = 20, label = "Shack: 5 Wood"},
+		Camp = {x = 10, y = 210, w = 200, h = 20, label = "Camp: 5 Wood"},
 		Temple = {x = 10, y = 235, w = 200, h = 20, label = "Temple: 100 Stone"},
 		Tower = {x = 10, y = 260, w = 200, h = 20, label = "Tower: 20 Stone"}, --this is wrong!
 		Quarry = {x = 10, y = 285, w = 200, h = 20, label = "Quarry: 10 Stone, 10 Wood"},

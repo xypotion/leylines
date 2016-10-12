@@ -1,6 +1,6 @@
 function loadStructureInfo()
 	structureInfo = {
-		Shack = {
+		Camp = {
 			r = 255, g = 127, b = 31, 
 			size = 1, vision = 6, 
 			cost = {Wood = 5}, production = {Stone = 1, Wood = 1}, 

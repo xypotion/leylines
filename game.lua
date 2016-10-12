@@ -236,7 +236,7 @@ function applyLeylinePower()
 	for i, s in pairs(structures) do
 		if s.type == "Tower" then
 			structures[i].targetVision = minNeighborDistance * (6 + 3 * s.numLines)
-		-- elseif s.type == "Shack" then
+		-- elseif s.type == "Camp" then
 		-- 	structures[i].targetVision = minNeighborDistance * (4 + 2 * s.numLines)
 		end
 	end

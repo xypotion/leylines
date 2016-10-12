@@ -4,6 +4,7 @@ BUGS (TODO) ! major - average . minor √ done x won't fix
 - leylines and hover text look choppy and bad. probably a different draw mode or something can fix that? drop shadows would also be good
 - starting structure should never be in water! needs to find nearest land or something
 - building in the fog is bad. prevent this by looking at all 4 hovered pixels
+- clicking on a clicked structure should unclick it
 . structures' costs don't increase until you build two
 . vision circle is not consistently shaped. why?
 
@@ -12,7 +13,7 @@ general TODO list, roughly in order
 √ move UI to a sidebar, draw map to the right
 √ ability to preview structures before placing
 √ on-hover effects for lines & structures (just names, i guess? maybe only structures for now?)
-- right-clicking: building structures in empty space + structure stats & options (this is how you upgrade structures!)
+- double-clicking: building structures in empty space + structure stats & options (this is how you upgrade structures!)
   - i.e. context menus. player can right click, then build, upgrade, or destroy
 	- can actually build off the existing "buttons" framework, i think. circular context menus seem appropriate for an RTS
 - move map view to right-clicked item if too near border? for circular (?) context menu
