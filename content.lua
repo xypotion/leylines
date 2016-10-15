@@ -5,31 +5,39 @@ function loadStructureInfo()
 			size = 1, vision = 6, 
 			cost = {Wood = 5}, production = {Stone = 1, Wood = 1}, 
 			costIncrease = 1.2,
+			upgrades = {
+				{type = "Tower", cost = {Stone = 10}},
+				{type = "Temple", cost = {Stone = 10, Wood = 10}}
 			},
+		},
 		Temple = {
 			r = 255, g = 255, b = 255, 
 			size = 1, vision = 9, 
 			cost = {Stone = 50}, production = {Stone = 1, Wood = 1}, 
 			costIncrease = 2, 
 			tip = "Pairs produce Leylines."
-			},
+		},
 		Tower = {
 			r = 191, g = 127, b = 255, 
 			size = 1, vision = 12, 
 			cost = {Stone = 5}, production = {}, 
-			costIncrease = 1.6},
+			costIncrease = 1.6,
+			upgrades = {
+				{type = "Quarry", cost = {Stone = 20}}
+			}
+		},
 		Quarry = {
 			r = 63, g = 63, b = 127, 
 			size = 1, vision = 8, 
 			cost = {Wood = 10, Stone = 10}, production = {Stone = 4}, 
 			costIncrease = 1.6
-			},
+		},
 		Mill = {
 			r = 127, g = 191, b = 63, 
 			size = 1, vision = 8, 
 			cost = {Wood = 10, Stone = 10}, production = {Wood = 4}, 
 			costIncrease = 1.6
-			},
+		},
 	}
 	
 	--kinda debug
@@ -37,6 +45,7 @@ function loadStructureInfo()
 		structureInfo[i].img = {}
 		structureInfo[i].img[4] = temple8
 		structureInfo[i].img[16] = temple32
+		--TODO using [4] and [16] is asinine. just call them bigImg and smallImg or something
 	end
 end
 
@@ -72,3 +81,9 @@ function stratifyTerrain()
 		end
 	end
 end
+
+--TODO ? just to enforce some rules on the content above, like a schema for each content type
+function validateContent()
+	--e.g. structures must have all the same fields
+end
+--no idea if this is a good approach

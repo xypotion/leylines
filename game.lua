@@ -21,7 +21,8 @@ function startGame()
 	generateIsland()
 	
 	structures = {}
-	buildA("Temple", mapCanvasWidth / 2, mapCanvasHeight / 2) --debug
+	buildA("Temple", mapCanvasWidth / 2, mapCanvasHeight / 2 - 2) --debug
+	buildA("Camp", mapCanvasWidth / 2, mapCanvasHeight / 2 + 2) --debug
 end
 
 function resourceTimer(dt)
@@ -84,7 +85,8 @@ function buildA(type, x, y)
 			vision = 0, 
 			targetVision = structureInfo[type].vision,
 			numLines = 0,
-			img = structureInfo[type].img
+			img = structureInfo[type].img,
+			upgrades = structureInfo[type].upgrades
 			-- production = structureInfo[type].production --maybe not that simple... gotta clone, not just ref. good TODO for performance, anyway
 		})
 		

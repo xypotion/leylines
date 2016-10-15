@@ -67,12 +67,18 @@ function drawHUD()
 		love.graphics.print("demolish", 175, 50)
 		
 		--TODO loop through structure's upgrade options and maka da buddins
-		love.graphics.rectangle("line", 10, 80, hudWidth - 20, 100)
-		love.graphics.rectangle("line", 10, 190, hudWidth - 20, 100)
-		love.graphics.rectangle("line", 10, 300, hudWidth - 20, 100)
-		love.graphics.print("upgrade", 100, 130)
-		love.graphics.print("buttons", 100, 240)
-		love.graphics.print("here", 100, 350)
+		-- love.graphics.rectangle("line", 10, 80, hudWidth - 20, 100)
+		-- love.graphics.rectangle("line", 10, 190, hudWidth - 20, 100)
+		-- love.graphics.rectangle("line", 10, 300, hudWidth - 20, 100)
+		-- love.graphics.print("upgrade", 100, 130)
+		-- love.graphics.print("buttons", 100, 240)
+		-- love.graphics.print("here", 100, 350)
+		
+		if clickedStructure.upgrades then
+			drawUpgradeButtons()
+		else
+			--
+		end
 	
 		--button tooltip
 		--TODO remove?
@@ -172,4 +178,25 @@ function calculateResourceRates()
 	-- for r, amt in pairs(resourceRates) do
 	-- 	print(r, amt)
 	-- end
+end
+
+function drawUpgradeButtons()
+	for i, u in ipairs(clickedStructure.upgrades) do
+		local h = i * 110
+
+		--border
+		love.graphics.rectangle("line", 10, h - 30, hudWidth - 20, 100)
+		
+		--pic and name
+		love.graphics.draw(structureInfo[u.type].img[16], 20, h - 20)
+		love.graphics.print(u.type, 60, h - 20)	
+		
+		--costs
+		if u.cost.Wood then 
+			love.graphics.print("Wood: "..u.cost.Wood, 20, h + 20)
+		end
+		if u.cost.Stone then 
+			love.graphics.print("Stone: "..u.cost.Stone, 20, h + 35)
+		end
+	end
 end
